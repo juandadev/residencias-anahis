@@ -1,3 +1,7 @@
+:root {
+    --primary-color: #FFE400;
+}
+
 .main {
     padding-top: 7.5rem;
     padding-bottom: 3rem;
@@ -9,4 +13,5 @@
     bottom: 0;
     left: 0;
     margin-top: 2rem;
+    width: 100vw;
 }
