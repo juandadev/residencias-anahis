@@ -6,7 +6,6 @@ import { Home, NotFound, Login } from '../components/containers';
 export default function Router() {
   const { state } = useContext(store);
   const { session } = state;
-  console.log(session);
 
   return (
     <BrowserRouter>
