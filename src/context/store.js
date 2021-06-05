@@ -1,7 +1,9 @@
 import React, { createContext, useReducer } from 'react';
 
 const initialState = {
-  session: {},
+  session: {
+    isLoggedIn: false,
+  },
   isOpen: false,
   modal: '',
 };
@@ -20,11 +22,14 @@ function ContextProvider({ children }) {
         ...state,
         session: {
           ...action.user,
+          isLoggedIn: true,
         },
       }),
       SESSION_END: () => ({
         ...state,
-        session: {},
+        session: {
+          isLoggedIn: false,
+        },
       }),
     };
 
