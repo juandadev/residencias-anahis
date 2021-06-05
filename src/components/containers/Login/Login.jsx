@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from 'react';
 
-import { Form, Button, Card } from 'react-bootstrap';
+import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { loginUser } from '../../../utils/services/database';
 import Layout from '../Layout/Layout';
 
 export default function Login() {
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    variant: '',
+  });
   const [validated, setValidated] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     const form = e.currentTarget;
+    e.preventDefault();
 
-    if (form.checkValidity() === false) {
-      e.preventDefault();
+    if (form.checkValidity() === true) {
       e.stopPropagation();
+      const res = await loginUser({ ...formData });
+
+      setAlert({
+        show: true,
+        message: res[1],
+        variant: res[0],
+      });
     }
 
     setValidated(true);
@@ -78,6 +91,26 @@ export default function Login() {
                 Este campo es obligatorio.
               </Form.Control.Feedback>
             </Form.Group>
+
+            <Form.Row>
+              {alert.show && (
+                <Alert
+                  variant={alert.variant}
+                  onClose={() =>
+                    setAlert((state) => ({ ...state, show: false }))
+                  }
+                  dismissible
+                >
+                  <Alert.Heading>
+                    {alert.variant === 'danger'
+                      ? 'Error al iniciar sesión'
+                      : '¡Éxito!'}
+                  </Alert.Heading>
+
+                  <p>{alert.message}</p>
+                </Alert>
+              )}
+            </Form.Row>
 
             <Button variant="primary" type="submit">
               Submit

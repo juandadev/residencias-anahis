@@ -1,8 +1,3 @@
-:root {
-    --primary-color: #FFE400;
-    --primary-color-darker: #d3be03;
-}
-
 .main {
     padding-top: 7.5rem;
     padding-bottom: 3rem;
@@ -17,6 +12,6 @@
     width: 100vw;
 }
 
-.btn {
-    margin-top: 1rem;
+.alert {
+    width: 100% !important;
 }

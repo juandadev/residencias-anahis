@@ -25,5 +25,7 @@ module.exports = {
     'react/forbid-prop-types': ['off'],
     'react/jsx-props-no-spreading': ['off'],
     'no-undef': ['off'],
+    'import/prefer-default-export': ['off'],
+    'import/no-unresolved': ['off'],
   },
 };

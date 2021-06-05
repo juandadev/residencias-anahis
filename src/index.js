@@ -4,7 +4,6 @@ import Router from './router/Router';
 import { ContextProvider } from './context/store';
 import reportWebVitals from './reportWebVitals';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './utils/styles/global.css';
 
 ReactDOM.render(
