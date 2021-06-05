@@ -8,7 +8,14 @@ export default function Header() {
       <Navbar fixed="top">
         <Container>
           <Link to="/">
-            <div className="navbar-brand">Tractores del Norte</div>
+            <div className="navbar-brand">
+              <img
+                src="http://tractoresdelnorte.com/images/Logos/logoTNO.png"
+                width={281.7}
+                height={80}
+                alt="Tractores del norte logo"
+              />
+            </div>
           </Link>
         </Container>
       </Navbar>

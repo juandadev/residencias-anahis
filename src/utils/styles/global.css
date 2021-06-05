@@ -1,7 +1,12 @@
 .main {
-    padding-top: 5.5rem;
+    padding-top: 7.5rem;
+    padding-bottom: 3rem;
+    min-height: 100vh;
 }
 
 .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     margin-top: 2rem;
 }
