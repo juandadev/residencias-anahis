@@ -1,19 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Home, NotFound, Login } from '../components/containers';
 
-export default function Router() {
+function Router({ session }) {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/login">
-          {/* {session.isLoggedIn ? <Redirect to="/" /> : <Login />} */}
-          <Login />
+          {session.isLoggedIn ? <Redirect to="/" /> : <Login />}
         </Route>
 
         <Route exact path="/">
-          {/* {session.isLoggedIn ? <Home /> : <Redirect to="/login" />} */}
-          <Home />
+          {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
         </Route>
 
         <Route component={NotFound} />
@@ -21,3 +20,9 @@ export default function Router() {
     </BrowserRouter>
   );
 }
+
+const mapStateToProps = (state) => ({
+  session: state.session,
+});
+
+export default connect(mapStateToProps, null)(Router);

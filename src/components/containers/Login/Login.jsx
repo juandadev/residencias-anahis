@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { sessionStart } from '../../../context/actions';
 import { loginUser } from '../../../utils/services/database';
 import Layout from '../Layout/Layout';
 
-export default function Login() {
+function Login({ sessionStart }) {
   const [alert, setAlert] = useState({
     show: false,
     message: '',
@@ -24,14 +26,11 @@ export default function Login() {
       const res = await loginUser({ ...formData });
 
       if (res[0] === 'success') {
-        dispatch({
-          type: 'SESSION_START',
-          user: {
-            id: res[2].id_user,
-            name: res[2].name_user,
-            email: res[2].email_user,
-            level: res[2].level_user,
-          },
+        sessionStart({
+          id: res[2].id_user,
+          name: res[2].name_user,
+          email: res[2].email_user,
+          level: res[2].level_user,
         });
       } else {
         setAlert({
@@ -132,3 +131,7 @@ export default function Login() {
     </Layout>
   );
 }
+
+const mapDispatchToProps = { sessionStart };
+
+export default connect(null, mapDispatchToProps)(Login);
