@@ -16,7 +16,8 @@ export const loginUser = async (credentials) => {
       })
       .then(({ data }) => data.data);
 
-    if (userAuthorized) return ['success', '¡Inicio de sesión exitoso!'];
+    if (userAuthorized)
+      return ['success', '¡Inicio de sesión exitoso!', userExists[0]];
 
     return ['danger', 'La contraseña introducida es incorrecta'];
   }

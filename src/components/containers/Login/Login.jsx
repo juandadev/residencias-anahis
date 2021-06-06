@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { loginUser } from '../../../utils/services/database';
 import Layout from '../Layout/Layout';
@@ -24,11 +23,23 @@ export default function Login() {
       e.stopPropagation();
       const res = await loginUser({ ...formData });
 
-      setAlert({
-        show: true,
-        message: res[1],
-        variant: res[0],
-      });
+      if (res[0] === 'success') {
+        dispatch({
+          type: 'SESSION_START',
+          user: {
+            id: res[2].id_user,
+            name: res[2].name_user,
+            email: res[2].email_user,
+            level: res[2].level_user,
+          },
+        });
+      } else {
+        setAlert({
+          show: true,
+          message: res[1],
+          variant: res[0],
+        });
+      }
     }
 
     setValidated(true);

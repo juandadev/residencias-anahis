@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Router from './router/Router';
-import { ContextProvider } from './context/store';
 import reportWebVitals from './reportWebVitals';
 
 import './utils/styles/global.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ContextProvider>
-      <Router />
-    </ContextProvider>
+    <Router />
   </React.StrictMode>,
   document.getElementById('root')
 );
