@@ -16,7 +16,11 @@ export default function Actions({ module, actions }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Agregar {module}</Tooltip>}
         >
-          <Button variant="secondary" onClick={actions.new}>
+          <Button
+            variant="secondary"
+            onClick={actions?.new}
+            disabled={!actions?.new}
+          >
             <i className="fas fa-plus" />
           </Button>
         </OverlayTrigger>
@@ -26,7 +30,11 @@ export default function Actions({ module, actions }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Editar {module}</Tooltip>}
         >
-          <Button variant="secondary" onClick={actions.edit}>
+          <Button
+            variant="secondary"
+            onClick={actions?.edit}
+            disabled={!actions?.edit}
+          >
             <i className="fas fa-edit" />
           </Button>
         </OverlayTrigger>
@@ -36,7 +44,11 @@ export default function Actions({ module, actions }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Eliminar {module}</Tooltip>}
         >
-          <Button variant="secondary" onClick={actions.delete}>
+          <Button
+            variant="secondary"
+            onClick={actions?.delete}
+            disabled={!actions?.delete}
+          >
             <i className="fas fa-trash" />
           </Button>
         </OverlayTrigger>
@@ -48,7 +60,7 @@ export default function Actions({ module, actions }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Exportar archivo PDF</Tooltip>}
         >
-          <Button variant="pdf" onClick={actions.pdf}>
+          <Button variant="pdf" onClick={actions?.pdf} disabled={!actions?.pdf}>
             <i className="fas fa-file-pdf" />
           </Button>
         </OverlayTrigger>
@@ -58,7 +70,11 @@ export default function Actions({ module, actions }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Exportar archivo Excel</Tooltip>}
         >
-          <Button variant="excel" onClick={actions.excel}>
+          <Button
+            variant="excel"
+            onClick={actions?.excel}
+            disabled={!actions?.excel}
+          >
             <i className="fas fa-file-excel" />
           </Button>
         </OverlayTrigger>
