@@ -12,28 +12,21 @@ const { Provider } = store;
 
 function ContextProvider({ children }) {
   const [state, dispatch] = useReducer((state, action) => {
-    options = {
-      MODAL_TRIGGER: () => ({
-        ...state,
-        isOpen: !state.isOpen,
-        modal: action.modal,
-      }),
-      SESSION_START: () => ({
-        ...state,
-        session: {
-          ...action.user,
-          isLoggedIn: true,
-        },
-      }),
-      SESSION_END: () => ({
-        ...state,
-        session: {
-          isLoggedIn: false,
-        },
-      }),
-    };
+    switch (action.type) {
+      case 'SESSION_START':
+        return {
+          ...state,
+          session: {
+            id: action.user.id,
+            name: action.user.name,
+            email: action.user.email,
+            isLoggedIn: true,
+          },
+        };
 
-    options[action.type]();
+      default:
+        return state;
+    }
   }, initialState);
 
   return <Provider value={{ state, dispatch }}>{children}</Provider>;

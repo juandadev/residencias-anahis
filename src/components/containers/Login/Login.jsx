@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
-import { loginUser } from '../../../utils/services/database';
+import { store } from '../../../context/store';
+import CookieService from '../../../utils/services/cookie';
+import { loginUser, verifyToken } from '../../../utils/services/database';
 import Layout from '../Layout/Layout';
 
 export default function Login() {
@@ -14,7 +16,10 @@ export default function Login() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    remember: false,
   });
+  const { dispatch } = useContext(store);
+  const history = useHistory();
 
   async function handleSubmit(e) {
     const form = e.currentTarget;
@@ -24,10 +29,27 @@ export default function Login() {
       e.stopPropagation();
       const res = await loginUser({ ...formData });
 
+      if (res.type === 'success') {
+        if (formData.remember) {
+          CookieService.set('access_token', res.user.token, { path: '/' });
+        } else {
+          const date = new Date();
+          date.setTime(date.getTime() + 60 * 24 * 60 * 1000);
+
+          CookieService.set('access_token', res.user.token, {
+            path: '/',
+            expires: date,
+          });
+        }
+
+        dispatch({ type: 'SESSION_START', user: res.user });
+        history.push('/');
+      }
+
       setAlert({
         show: true,
-        message: res[1],
-        variant: res[0],
+        message: res.message,
+        variant: res.type,
       });
     }
 
@@ -42,6 +64,8 @@ export default function Login() {
     const options = {
       email: () => setFormData((state) => ({ ...state, ...data })),
       password: () => setFormData((state) => ({ ...state, ...data })),
+      remember: () =>
+        setFormData((state) => ({ ...state, remember: !state.remember })),
     };
 
     options[name]();
@@ -49,6 +73,11 @@ export default function Login() {
 
   useEffect(() => {
     document.title = 'Iniciar sesión | Tractores del Norte';
+    verifyToken().then((res) => {
+      if (res.data) {
+        dispatch({ type: 'SESSION_START', user: res.data });
+      }
+    });
   }, []);
 
   return (
@@ -90,6 +119,15 @@ export default function Login() {
               <Form.Control.Feedback type="invalid">
                 Este campo es obligatorio.
               </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="remember">
+              <Form.Check
+                type="checkbox"
+                name="remember"
+                label="Mantener sesión iniciada"
+                onClick={handleChange}
+              />
             </Form.Group>
 
             <Form.Row>
