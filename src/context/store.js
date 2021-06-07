@@ -20,6 +20,7 @@ function ContextProvider({ children }) {
             id: action.user.id,
             name: action.user.name,
             email: action.user.email,
+            level: action.user.level,
             isLoggedIn: true,
           },
         };

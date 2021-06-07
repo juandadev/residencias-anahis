@@ -46,6 +46,7 @@ export default function Login() {
             id: res.user.id_user,
             name: res.user.name_user,
             email: res.user.email_user,
+            level: res.user.level_user,
           },
         });
       }

@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tab, Col, Row, Nav } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { store } from '../../../context/store';
 import Layout from '../Layout/Layout';
 
 function Home() {
   const history = useHistory();
+  const { state } = useContext(store);
+  const { session } = state;
 
   function handleTabUrl(tab) {
     history.push(`/dashboard/${tab}`);
@@ -39,6 +42,14 @@ function Home() {
                   <i className="fas fa-shipping-fast" /> Proveedores
                 </Nav.Link>
               </Nav.Item>
+
+              {session.level === 'admin' && (
+                <Nav.Item onClick={() => handleTabUrl('Usuarios')}>
+                  <Nav.Link eventKey="users">
+                    <i className="fas fa-users-cog" /> Usuarios
+                  </Nav.Link>
+                </Nav.Item>
+              )}
             </Nav>
           </Col>
 
@@ -51,6 +62,8 @@ function Home() {
               <Tab.Pane eventKey="products">Productos</Tab.Pane>
 
               <Tab.Pane eventKey="vendors">Proveedores</Tab.Pane>
+
+              <Tab.Pane eventKey="users">Usuarios</Tab.Pane>
             </Tab.Content>
           </Col>
         </Row>
