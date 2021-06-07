@@ -44,3 +44,11 @@ export const loginUser = async (credentials) => {
     message: 'No existe ningún usuario registrado con el correo proporcionado',
   };
 };
+
+export const getUser = async (id) => {
+  const user = await axios
+    .get(`${ENDPOINT_URL}/api/users/${id}`)
+    .then((res) => res.data);
+
+  return user.data[0];
+};

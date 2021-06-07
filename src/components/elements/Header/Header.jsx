@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Container, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Navbar, NavDropdown, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { store } from '../../../context/store';
 import CookieService from '../../../utils/services/cookie';

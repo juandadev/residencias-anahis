@@ -3,6 +3,7 @@ import { Tab, Col, Row, Nav } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { store } from '../../../context/store';
 import Layout from '../Layout/Layout';
+import { Profile } from '..';
 
 function Home() {
   const history = useHistory();
@@ -55,7 +56,9 @@ function Home() {
 
           <Col sm={9}>
             <Tab.Content>
-              <Tab.Pane eventKey="profile">Perfil</Tab.Pane>
+              <Tab.Pane eventKey="profile">
+                <Profile />
+              </Tab.Pane>
 
               <Tab.Pane eventKey="clients">Clientes</Tab.Pane>
 
