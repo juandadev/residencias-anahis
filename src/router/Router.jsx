@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { store } from '../context/store';
 import { Home, NotFound, Login } from '../components/containers';
 
-function Router({ session }) {
+export default function Router() {
+  const { state } = useContext(store);
+  const { session } = state;
+
   return (
     <BrowserRouter>
       <Switch>
@@ -20,9 +23,3 @@ function Router({ session }) {
     </BrowserRouter>
   );
 }
-
-const mapStateToProps = (state) => ({
-  session: state.session,
-});
-
-export default connect(mapStateToProps, null)(Router);

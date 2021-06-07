@@ -1,6 +1,16 @@
 import axios from 'axios';
+import CookieService from './cookie';
 
 const ENDPOINT_URL = 'http://localhost:3000';
+
+export const verifyToken = async () => {
+  const token = CookieService.get('access_token');
+  const decode = await axios
+    .get(`${ENDPOINT_URL}/api/users/decode/${token}`)
+    .then((res) => res.data);
+
+  return decode;
+};
 
 export const loginUser = async (credentials) => {
   const url = `${ENDPOINT_URL}/api/users/`;
@@ -17,13 +27,20 @@ export const loginUser = async (credentials) => {
       .then(({ data }) => data.data);
 
     if (userAuthorized)
-      return ['success', '¡Inicio de sesión exitoso!', userExists[0]];
+      return {
+        type: 'success',
+        message: '¡Inicio de sesión exitoso!',
+        user: userAuthorized,
+      };
 
-    return ['danger', 'La contraseña introducida es incorrecta'];
+    return {
+      type: 'danger',
+      message: 'La contraseña introducida es incorrecta',
+    };
   }
 
-  return [
-    'danger',
-    'No existe ningún usuario registrado con el correo proporcionado',
-  ];
+  return {
+    type: 'danger',
+    message: 'No existe ningún usuario registrado con el correo proporcionado',
+  };
 };
