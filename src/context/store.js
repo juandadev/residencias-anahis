@@ -4,7 +4,6 @@ const initialState = {
   session: {
     isLoggedIn: false,
   },
-  loading: true,
   isOpen: false,
   modal: '',
 };
@@ -23,7 +22,14 @@ function ContextProvider({ children }) {
             email: action.user.email,
             isLoggedIn: true,
           },
-          loading: false,
+        };
+
+      case 'SESSION_END':
+        return {
+          ...state,
+          session: {
+            isLoggedIn: false,
+          },
         };
 
       default:

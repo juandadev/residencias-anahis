@@ -1,12 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Container, Navbar, NavDropdown } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { store } from '../../../context/store';
+import CookieService from '../../../utils/services/cookie';
 
 export default function Header() {
-  const { state } = useContext(store);
+  const [name, setName] = useState('');
+  const { state, dispatch } = useContext(store);
   const param = useParams();
-  const { session, loading } = state;
+  const { session } = state;
 
   function splitUserName() {
     const separatedName = session.name.split(' ');
@@ -14,9 +16,15 @@ export default function Header() {
     return `${separatedName[0]} ${separatedName[1]}`;
   }
 
+  function handleLogOut() {
+    dispatch({ type: 'SESSION_END' });
+    CookieService.remove('access_token');
+  }
+
   useEffect(() => {
     document.title = `${param.tab || 'Inicio'} | Tractores del Norte`;
-  }, [loading, param]);
+    if (session.isLoggedIn) setName(splitUserName());
+  }, [param]);
 
   return (
     <header className="header">
@@ -31,11 +39,11 @@ export default function Header() {
             />
           </Navbar.Brand>
 
-          {!loading && (
-            <NavDropdown title={splitUserName()} id="session-menu">
+          {session.isLoggedIn && (
+            <NavDropdown title={name} id="session-menu">
               <NavDropdown.Divider />
 
-              <NavDropdown.Item>
+              <NavDropdown.Item onClick={handleLogOut}>
                 <Button variant="primary">Cerrar sesión</Button>
               </NavDropdown.Item>
             </NavDropdown>

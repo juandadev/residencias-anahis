@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { store } from '../../../context/store';
 import CookieService from '../../../utils/services/cookie';
@@ -19,7 +18,6 @@ export default function Login() {
   });
   const [validated, setValidated] = useState(false);
   const { dispatch } = useContext(store);
-  const history = useHistory();
 
   async function handleSubmit(e) {
     const form = e.currentTarget;
@@ -42,8 +40,14 @@ export default function Login() {
           });
         }
 
-        dispatch({ type: 'SESSION_START', user: res.user });
-        history.push('/');
+        dispatch({
+          type: 'SESSION_START',
+          user: {
+            id: res.user.id_user,
+            name: res.user.name_user,
+            email: res.user.email_user,
+          },
+        });
       }
 
       setAlert({

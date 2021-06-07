@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Tab, Col, Row, Nav } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import Layout from '../Layout/Layout';
