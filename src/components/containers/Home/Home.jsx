@@ -1,14 +1,17 @@
-import React, { useContext } from 'react';
-import { Tab, Col, Row, Nav } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import React, { useContext, lazy, Suspense } from 'react';
+import { Tab, Col, Row, Nav, Spinner } from 'react-bootstrap';
+import { useHistory, useParams } from 'react-router-dom';
 import { store } from '../../../context/store';
 import Layout from '../Layout/Layout';
-import { Profile } from '..';
+import { Profile } from '../index';
+
+const Clients = lazy(() => import('../Clients/Clients'));
 
 function Home() {
   const history = useHistory();
   const { state } = useContext(store);
   const { session } = state;
+  const param = useParams();
 
   function handleTabUrl(tab) {
     history.push(`/dashboard/${tab}`);
@@ -60,7 +63,15 @@ function Home() {
                 <Profile />
               </Tab.Pane>
 
-              <Tab.Pane eventKey="clients">Clientes</Tab.Pane>
+              <Tab.Pane eventKey="clients">
+                {param.tab === 'Clientes' && (
+                  <Suspense
+                    fallback={<Spinner animation="grow" variant="primary" />}
+                  >
+                    <Clients />
+                  </Suspense>
+                )}
+              </Tab.Pane>
 
               <Tab.Pane eventKey="products">Productos</Tab.Pane>
 

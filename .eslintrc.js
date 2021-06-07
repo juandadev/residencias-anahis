@@ -28,5 +28,8 @@ module.exports = {
     'import/prefer-default-export': ['off'],
     'import/no-unresolved': ['off'],
     'no-unused-vars': ['off'],
+    'import/no-cycle': ['off'],
+    'react/no-array-index-key': ['off'],
+    'jsx-a11y/label-has-associated-control': ['off'],
   },
 };

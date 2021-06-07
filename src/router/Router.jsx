@@ -1,7 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, Suspense, lazy } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { store } from '../context/store';
-import { Home, NotFound, Login } from '../components/containers';
+// import { Home, NotFound, Login } from '../components/containers';
+
+const Home = lazy(() => import('../components/containers/Home/Home'));
+const NotFound = lazy(
+  () => import('../components/containers/NotFound/NotFound')
+);
+const Login = lazy(() => import('../components/containers/Login/Login'));
 
 export default function Router() {
   const { state } = useContext(store);
@@ -9,21 +16,23 @@ export default function Router() {
 
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/login">
-          {session.isLoggedIn ? <Redirect to="/" /> : <Login />}
-        </Route>
+      <Suspense fallback={<Spinner animation="grow" variant="primary" />}>
+        <Switch>
+          <Route exact path="/login">
+            {session.isLoggedIn ? <Redirect to="/" /> : <Login />}
+          </Route>
 
-        <Route path="/dashboard/:tab">
-          {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
-        </Route>
+          <Route path="/dashboard/:tab">
+            {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
+          </Route>
 
-        <Route exact path="/">
-          {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
-        </Route>
+          <Route exact path="/">
+            {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
+          </Route>
 
-        <Route component={NotFound} />
-      </Switch>
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
     </BrowserRouter>
   );
 }
