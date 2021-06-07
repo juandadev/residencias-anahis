@@ -19,3 +19,23 @@
 .jumbotron {
     padding: 1rem 2rem;
 }
+
+.btn-pdf {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+.btn-pdf:hover {
+    background-color: #d40101;
+    color: #fff;
+}
+
+.btn-excel {
+    background-color: #1d6f42;
+    color: #fff;
+}
+
+.btn-excel:hover {
+    background-color: #195e38;
+    color: #fff;
+}
