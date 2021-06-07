@@ -6,11 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import './utils/styles/global.css';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ContextProvider>
-      <Router />
-    </ContextProvider>
-  </React.StrictMode>,
+  <ContextProvider>
+    <Router />
+  </ContextProvider>,
   document.getElementById('root')
 );
 
