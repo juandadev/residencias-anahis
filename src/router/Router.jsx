@@ -14,6 +14,10 @@ export default function Router() {
           {session.isLoggedIn ? <Redirect to="/" /> : <Login />}
         </Route>
 
+        <Route path="/dashboard/:tab">
+          {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
+        </Route>
+
         <Route exact path="/">
           {session.isLoggedIn ? <Home /> : <Redirect to="/login" />}
         </Route>

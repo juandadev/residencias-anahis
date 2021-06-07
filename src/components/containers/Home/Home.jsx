@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Tab, Col, Row, Nav } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import Layout from '../Layout/Layout';
@@ -7,7 +7,7 @@ function Home() {
   const history = useHistory();
 
   function handleTabUrl(tab) {
-    history.push(`/?tab=${tab}`);
+    history.push(`/dashboard/${tab}`);
   }
 
   return (
@@ -16,25 +16,25 @@ function Home() {
         <Row>
           <Col sm={3}>
             <Nav variant="pills" className="flex-column">
-              <Nav.Item onClick={() => handleTabUrl('profile')}>
+              <Nav.Item onClick={() => handleTabUrl('Perfil')}>
                 <Nav.Link eventKey="profile">
                   <i className="fas fa-user" /> Perfil
                 </Nav.Link>
               </Nav.Item>
 
-              <Nav.Item onClick={() => handleTabUrl('clients')}>
+              <Nav.Item onClick={() => handleTabUrl('Clientes')}>
                 <Nav.Link eventKey="clients">
                   <i className="fas fa-users" /> Clientes
                 </Nav.Link>
               </Nav.Item>
 
-              <Nav.Item onClick={() => handleTabUrl('products')}>
+              <Nav.Item onClick={() => handleTabUrl('Productos')}>
                 <Nav.Link eventKey="products">
                   <i className="fas fa-box" /> Productos
                 </Nav.Link>
               </Nav.Item>
 
-              <Nav.Item onClick={() => handleTabUrl('vendors')}>
+              <Nav.Item onClick={() => handleTabUrl('Proveedores')}>
                 <Nav.Link eventKey="vendors">
                   <i className="fas fa-shipping-fast" /> Proveedores
                 </Nav.Link>
