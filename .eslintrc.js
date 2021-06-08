@@ -31,5 +31,6 @@ module.exports = {
     'import/no-cycle': ['off'],
     'react/no-array-index-key': ['off'],
     'jsx-a11y/label-has-associated-control': ['off'],
+    'dot-notation': ['off'],
   },
 };

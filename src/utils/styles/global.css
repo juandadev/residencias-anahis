@@ -25,6 +25,10 @@
     color: #fff;
 }
 
+.btn-pdf:disabled:hover {
+    background-color: #ff0000;
+}
+
 .btn-pdf:hover {
     background-color: #d40101;
     color: #fff;
@@ -35,7 +39,15 @@
     color: #fff;
 }
 
+.btn-excel:disabled:hover {
+    background-color: #1d6f42;
+}
+
 .btn-excel:hover {
     background-color: #195e38;
     color: #fff;
+}
+
+.list-group-item p {
+    margin-bottom: 0;
 }

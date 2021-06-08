@@ -52,3 +52,12 @@ export const getUser = async (id) => {
 
   return user.data[0];
 };
+
+// Clients
+export const getClients = async () => {
+  const clients = await axios
+    .get(`${ENDPOINT_URL}/api/clients/`)
+    .then((res) => res.data);
+
+  return clients.data;
+};
