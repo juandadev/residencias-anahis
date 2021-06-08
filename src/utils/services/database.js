@@ -1,7 +1,7 @@
 import axios from 'axios';
 import CookieService from './cookie';
 
-const ENDPOINT_URL = 'http://localhost:3000';
+const ENDPOINT_URL = 'https://mysterious-everglades-14603.herokuapp.com';
 
 export const verifyToken = async () => {
   const token = CookieService.get('access_token');
