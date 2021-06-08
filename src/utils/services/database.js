@@ -104,6 +104,30 @@ export const getVendors = async () => {
   return vendors.data;
 };
 
+export const insertVendor = async (data) => {
+  const vendor = await axios
+    .post(`${ENDPOINT_URL}/api/vendors/`, data)
+    .then((res) => res.data);
+
+  return vendor.data;
+};
+
+export const modifyVendor = async (id, data) => {
+  const vendor = await axios
+    .put(`${ENDPOINT_URL}/api/vendors/${id}`, data)
+    .then((res) => res.data);
+
+  return vendor.data;
+};
+
+export const removeVendor = async (id) => {
+  const vendor = await axios
+    .delete(`${ENDPOINT_URL}/api/vendors/${id}`)
+    .then((res) => res.data);
+
+  return vendor.data;
+};
+
 // Users
 export const getUsers = async () => {
   const users = await axios

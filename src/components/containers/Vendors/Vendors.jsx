@@ -1,14 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Col, Jumbotron, Row } from 'react-bootstrap';
-import { getVendors } from '../../../utils/services/database';
+import { store } from '../../../context/store';
+import {
+  getVendors,
+  insertVendor,
+  modifyVendor,
+  removeVendor,
+} from '../../../utils/services/database';
 import { Actions, List } from '../../elements/index';
 
 export default function Vendors() {
+  const { dispatch } = useContext(store);
   const [vendors, setVendors] = useState([]);
+  const [response, setResponse] = useState({});
+
+  function handleInsert(data) {
+    insertVendor(data).then((res) => setResponse(res));
+  }
+
+  function handleUpdate(id, data) {
+    modifyVendor(id, data).then((res) => setResponse(res));
+  }
+
+  function handleDelete(data) {
+    Promise.resolve(data.forEach((item) => removeVendor(item))).then((res) =>
+      dispatch({ type: 'SET_SELECTED', selected: [] })
+    );
+
+    setResponse(data);
+  }
 
   useEffect(() => {
     getVendors().then((res) => setVendors(res));
-  }, []);
+  }, [response]);
 
   return (
     <>
@@ -17,7 +41,34 @@ export default function Vendors() {
       <Jumbotron>
         <Row>
           <Col className="d-flex justify-content-end">
-            <Actions module="proveedor" />
+            <Actions
+              module="proveedor"
+              id="vendor"
+              actions={{
+                new: [
+                  handleInsert,
+                  [
+                    ['text', 'name', 'Nombre'],
+                    ['text', 'social', 'Razón social'],
+                    ['text', 'address', 'Dirección'],
+                    ['text', 'phone', 'Teléfono'],
+                    ['text', 'bank', 'Cuenta bancaria'],
+                  ],
+                ],
+                delete: [handleDelete],
+                edit: [
+                  handleUpdate,
+                  [
+                    ['text', 'name', 'Nombre'],
+                    ['text', 'social', 'Razón social'],
+                    ['text', 'address', 'Dirección'],
+                    ['text', 'phone', 'Teléfono'],
+                    ['text', 'bank', 'Cuenta bancaria'],
+                  ],
+                  vendors,
+                ],
+              }}
+            />
           </Col>
         </Row>
 

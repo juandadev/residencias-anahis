@@ -90,3 +90,23 @@ option {
     padding: 0px 2px 1px;
     text-transform: capitalize;
 }
+
+#modal {
+    position: relative;
+    z-index: 99;
+}
+
+#modal .alert {
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 600px;
+}
+
+.fixed-top {
+    z-index: 98;
+}

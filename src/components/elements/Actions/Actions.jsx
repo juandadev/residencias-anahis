@@ -8,6 +8,7 @@ import {
   Form,
 } from 'react-bootstrap';
 import { store } from '../../../context/store';
+import Alert from '../Alert/Alert';
 
 /**
  * Component to manage the basic CRUD actions (create, read, update, delete)
@@ -18,6 +19,7 @@ import { store } from '../../../context/store';
 export default function Actions({ module, actions, id }) {
   const { state } = useContext(store);
   const { selected } = state;
+  const [alert, setAlert] = useState(false);
   const [insert, setInsert] = useState({});
   const [edit, setEdit] = useState({});
   const [selectedRecord, setSelectedRecord] = useState(0);
@@ -86,6 +88,17 @@ export default function Actions({ module, actions, id }) {
     setEdit(editData);
   }
 
+  function verifySelected() {
+    if (selected.length === 0) {
+      setAlert(true);
+    } else {
+      setModal((state) => ({
+        ...state,
+        delete: true,
+      }));
+    }
+  }
+
   useEffect(() => {
     initializeInsertData();
     initializeEditData();
@@ -141,12 +154,7 @@ export default function Actions({ module, actions, id }) {
         >
           <Button
             variant="secondary"
-            onClick={() =>
-              setModal((state) => ({
-                ...state,
-                delete: true,
-              }))
-            }
+            onClick={verifySelected}
             disabled={!actions?.delete}
           >
             <i className="fas fa-trash" />
@@ -180,6 +188,7 @@ export default function Actions({ module, actions, id }) {
         </OverlayTrigger>
       </ButtonGroup>
 
+      {/* Delete */}
       <Modal show={modal.delete} onHide={() => handleClose('delete')}>
         <Modal.Header closeButton>
           <Modal.Title>{`Eliminar ${module}`}</Modal.Title>
@@ -208,6 +217,7 @@ export default function Actions({ module, actions, id }) {
         </Modal.Footer>
       </Modal>
 
+      {/* Edit */}
       <Modal
         show={modal.edit}
         onHide={() => {
@@ -286,6 +296,7 @@ export default function Actions({ module, actions, id }) {
         </Modal.Footer>
       </Modal>
 
+      {/* Insert */}
       <Modal
         show={modal.insert}
         onHide={() => {
@@ -336,6 +347,15 @@ export default function Actions({ module, actions, id }) {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Alert
+        show={alert}
+        setShow={setAlert}
+        type="danger"
+        message={`Necesitas seleccionar uno o más ${
+          module === 'proveedor' ? `${module}es` : `${module}s`
+        }`}
+      />
     </>
   );
 }
