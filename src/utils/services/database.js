@@ -136,3 +136,27 @@ export const getUsers = async () => {
 
   return users.data;
 };
+
+export const insertUser = async (data) => {
+  const user = await axios
+    .post(`${ENDPOINT_URL}/api/users/`, data)
+    .then((res) => res.data);
+
+  return user.data;
+};
+
+export const modifyUser = async (id, data) => {
+  const user = await axios
+    .put(`${ENDPOINT_URL}/api/users/${id}`, data)
+    .then((res) => res.data);
+
+  return user.data;
+};
+
+export const removeUser = async (id) => {
+  const user = await axios
+    .delete(`${ENDPOINT_URL}/api/users/${id}`)
+    .then((res) => res.data);
+
+  return user.data;
+};

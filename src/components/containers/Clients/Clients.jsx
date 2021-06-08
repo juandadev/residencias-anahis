@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Col, Form, Jumbotron, Row } from 'react-bootstrap';
+import { Col, Jumbotron, Row } from 'react-bootstrap';
 import { store } from '../../../context/store';
 import {
   getClients,

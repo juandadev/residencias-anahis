@@ -64,7 +64,17 @@ export default function Actions({ module, actions, id }) {
       (o, key) => ({ ...o, [key[1]]: '' }),
       {}
     );
-    setInsert(insertData);
+
+    const isSelect = actions?.new[1].find((item) => item[0] === 'select');
+
+    if (isSelect) {
+      setInsert((state) => ({
+        ...insertData,
+        [isSelect[1]]: isSelect[3][0][0],
+      }));
+    } else {
+      setInsert(insertData);
+    }
   }
 
   function initializeEditData(identifier) {
@@ -85,7 +95,16 @@ export default function Actions({ module, actions, id }) {
       );
     }
 
-    setEdit(editData);
+    const isSelect = actions?.new[1].find((item) => item[0] === 'select');
+
+    if (isSelect && findRecord) {
+      setEdit((state) => ({
+        ...editData,
+        [isSelect[1]]: findRecord[`${isSelect[1]}_${id}`],
+      }));
+    } else {
+      setEdit(editData);
+    }
   }
 
   function verifySelected() {
@@ -252,23 +271,55 @@ export default function Actions({ module, actions, id }) {
               </select>
             </Form.Group>
 
-            {actions?.edit[1].map((item, index) => (
-              <Form.Group
-                key={`${module}-input-${index}`}
-                className="mb-3"
-                controlId={item[1]}
-              >
-                <Form.Label>{item[2]}</Form.Label>
+            {actions?.edit[1].map((item, index) =>
+              item[0] === 'select' ? (
+                <Form.Group
+                  key={`${module}-input-${index}`}
+                  className="mb-3"
+                  controlId={item[1]}
+                >
+                  <Form.Label>{item[2]}</Form.Label>
 
-                <Form.Control
-                  type={item[0]}
-                  name={item[1]}
-                  value={edit[item[1]]}
-                  onChange={(e) => handleChange(e, 'edit')}
-                  required
-                />
-              </Form.Group>
-            ))}
+                  <select
+                    name="level"
+                    id="level"
+                    className="form-select"
+                    value={edit[item[1]]}
+                    onChange={(e) =>
+                      setEdit((state) => ({
+                        ...state,
+                        level: e.target.value,
+                      }))
+                    }
+                  >
+                    {item[3].map((option, index) => (
+                      <option
+                        key={`${id}-select-opt-${index}`}
+                        value={option[0]}
+                      >
+                        {option[1]}
+                      </option>
+                    ))}
+                  </select>
+                </Form.Group>
+              ) : (
+                <Form.Group
+                  key={`${module}-input-${index}`}
+                  className="mb-3"
+                  controlId={item[1]}
+                >
+                  <Form.Label>{item[2]}</Form.Label>
+
+                  <Form.Control
+                    type={item[0]}
+                    name={item[1]}
+                    value={edit[item[1]]}
+                    onChange={(e) => handleChange(e, 'edit')}
+                    required
+                  />
+                </Form.Group>
+              )
+            )}
           </Form>
         </Modal.Body>
 
@@ -310,23 +361,55 @@ export default function Actions({ module, actions, id }) {
 
         <Modal.Body>
           <Form>
-            {actions?.new[1].map((item, index) => (
-              <Form.Group
-                key={`${module}-input-${index}`}
-                className="mb-3"
-                controlId={item[1]}
-              >
-                <Form.Label>{item[2]}</Form.Label>
+            {actions?.new[1].map((item, index) =>
+              item[0] === 'select' ? (
+                <Form.Group
+                  key={`${module}-input-${index}`}
+                  className="mb-3"
+                  controlId={item[1]}
+                >
+                  <Form.Label>{item[2]}</Form.Label>
 
-                <Form.Control
-                  type={item[0]}
-                  name={item[1]}
-                  value={insert[item[1]]}
-                  onChange={(e) => handleChange(e, 'insert')}
-                  required
-                />
-              </Form.Group>
-            ))}
+                  <select
+                    name="level"
+                    id="level"
+                    className="form-select"
+                    value={insert[item[1]]}
+                    onChange={(e) =>
+                      setInsert((state) => ({
+                        ...state,
+                        level: e.target.value,
+                      }))
+                    }
+                  >
+                    {item[3].map((option, index) => (
+                      <option
+                        key={`${id}-select-opt-${index}`}
+                        value={option[0]}
+                      >
+                        {option[1]}
+                      </option>
+                    ))}
+                  </select>
+                </Form.Group>
+              ) : (
+                <Form.Group
+                  key={`${module}-input-${index}`}
+                  className="mb-3"
+                  controlId={item[1]}
+                >
+                  <Form.Label>{item[2]}</Form.Label>
+
+                  <Form.Control
+                    type={item[0]}
+                    name={item[1]}
+                    value={insert[item[1]]}
+                    onChange={(e) => handleChange(e, 'insert')}
+                    required
+                  />
+                </Form.Group>
+              )
+            )}
           </Form>
         </Modal.Body>
 
