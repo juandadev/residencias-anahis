@@ -6,6 +6,7 @@ const initialState = {
   },
   isOpen: false,
   modal: '',
+  selected: [],
 };
 const store = createContext(initialState);
 const { Provider } = store;
@@ -31,6 +32,12 @@ function ContextProvider({ children }) {
           session: {
             isLoggedIn: false,
           },
+        };
+
+      case 'SET_SELECTED':
+        return {
+          ...state,
+          selected: action.selected,
         };
 
       default:

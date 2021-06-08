@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Badge, Col, ListGroup, Row, Spinner } from 'react-bootstrap';
+import { store } from '../../../context/store';
 import CheckBox from '../CheckBox/CheckBox';
 
 export default function List({ id, data, structure }) {
+  const [selected, setSelected] = useState([]);
+  const { dispatch } = useContext(store);
+
+  function handleSelected(item) {
+    setSelected((state) => {
+      if (state.find((x) => x === item[`id_${id}`])) {
+        const index = state.indexOf(item[`id_${id}`]);
+        const oldState = state;
+
+        oldState.splice(index, 1);
+        return [...oldState];
+      }
+      return [...state, item[`id_${id}`]];
+    });
+  }
+
+  useEffect(() => {
+    dispatch({ type: 'SET_SELECTED', selected });
+  }, [selected]);
+
   return (
     <div className="list-container mt-3">
       <Row className="list-headers text-black-50">
@@ -49,7 +70,10 @@ export default function List({ id, data, structure }) {
                   xs={1}
                   className="d-flex align-items-center justify-content-center"
                 >
-                  <CheckBox id={`${id}-select-${index}`} />
+                  <CheckBox
+                    id={`${id}-select-${index}`}
+                    onClick={() => handleSelected(item)}
+                  />
                 </Col>
               </Row>
             </ListGroup.Item>

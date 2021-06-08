@@ -1,16 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Col, Form, Jumbotron, Row } from 'react-bootstrap';
-import { getClients, insertClient } from '../../../utils/services/database';
+import { store } from '../../../context/store';
+import {
+  getClients,
+  insertClient,
+  removeClient,
+} from '../../../utils/services/database';
 import { Actions, List } from '../../elements/index';
 
 export default function Clients() {
+  const { dispatch } = useContext(store);
   const [clients, setClients] = useState([]);
   const [response, setResponse] = useState(null);
+  const [selected, setSelected] = useState([]);
 
   function handleInsert(data) {
     insertClient(data).then((res) => {
       setResponse(res);
     });
+  }
+
+  function handleDelete(data) {
+    Promise.resolve(data.forEach((item) => removeClient(item))).then((res) =>
+      dispatch({ type: 'SET_SELECTED', selected: [] })
+    );
+    setResponse(data);
   }
 
   useEffect(() => {
@@ -36,6 +50,7 @@ export default function Clients() {
                     ['email', 'email', 'Correo electrónico'],
                   ],
                 ],
+                delete: [handleDelete],
               }}
             />
           </Col>
