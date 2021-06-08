@@ -62,6 +62,30 @@ export const getClients = async () => {
   return clients.data;
 };
 
+export const insertClient = async (data) => {
+  const client = await axios
+    .post(`${ENDPOINT_URL}/api/clients/`, data)
+    .then((res) => res.data);
+
+  return client.data;
+};
+
+export const modifyClient = async (id, data) => {
+  const client = await axios
+    .put(`${ENDPOINT_URL}/api/clients/${id}`, data)
+    .then((res) => res.data);
+
+  return client.data;
+};
+
+export const removeClient = async (id) => {
+  const client = await axios
+    .delete(`${ENDPOINT_URL}/api/clients/${id}`)
+    .then((res) => res.data);
+
+  return client.data;
+};
+
 // Products
 export const getProducts = async () => {
   const products = await axios

@@ -79,7 +79,13 @@ function Home() {
               <Tab.Pane eventKey="products">
                 {param.tab === 'Productos' && (
                   <Suspense
-                    fallback={<Spinner animation="grow" variant="primary" />}
+                    fallback={
+                      <Row>
+                        <Col xs={12} className="d-flex justify-content-center">
+                          <Spinner animation="grow" variant="primary" />
+                        </Col>
+                      </Row>
+                    }
                   >
                     <Products />
                   </Suspense>
@@ -89,7 +95,13 @@ function Home() {
               <Tab.Pane eventKey="vendors">
                 {param.tab === 'Proveedores' && (
                   <Suspense
-                    fallback={<Spinner animation="grow" variant="primary" />}
+                    fallback={
+                      <Row>
+                        <Col xs={12} className="d-flex justify-content-center">
+                          <Spinner animation="grow" variant="primary" />
+                        </Col>
+                      </Row>
+                    }
                   >
                     <Vendors />
                   </Suspense>
@@ -99,7 +111,13 @@ function Home() {
               <Tab.Pane eventKey="users">
                 {param.tab === 'Usuarios' && (
                   <Suspense
-                    fallback={<Spinner animation="grow" variant="primary" />}
+                    fallback={
+                      <Row>
+                        <Col xs={12} className="d-flex justify-content-center">
+                          <Spinner animation="grow" variant="primary" />
+                        </Col>
+                      </Row>
+                    }
                   >
                     <Users />
                   </Suspense>

@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Jumbotron, Row } from 'react-bootstrap';
-import { getClients } from '../../../utils/services/database';
+import { Col, Form, Jumbotron, Row } from 'react-bootstrap';
+import { getClients, insertClient } from '../../../utils/services/database';
 import { Actions, List } from '../../elements/index';
 
 export default function Clients() {
   const [clients, setClients] = useState([]);
+  const [response, setResponse] = useState(null);
+
+  function handleInsert(data) {
+    insertClient(data).then((res) => {
+      setResponse(res);
+    });
+  }
 
   useEffect(() => {
     getClients().then((res) => setClients(res));
-  }, []);
+  }, [response]);
 
   return (
     <>
@@ -17,7 +24,20 @@ export default function Clients() {
       <Jumbotron>
         <Row>
           <Col className="d-flex justify-content-end">
-            <Actions module="clientes" />
+            <Actions
+              module="cliente"
+              actions={{
+                new: [
+                  handleInsert,
+                  [
+                    ['text', 'name', 'Nombre'],
+                    ['text', 'address', 'Dirección'],
+                    ['text', 'phone', 'Teléfono'],
+                    ['email', 'email', 'Correo electrónico'],
+                  ],
+                ],
+              }}
+            />
           </Col>
         </Row>
 

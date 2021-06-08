@@ -1,5 +1,5 @@
 import React, { useContext, Suspense, lazy } from 'react';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Row, Col } from 'react-bootstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { store } from '../context/store';
 // import { Home, NotFound, Login } from '../components/containers';
@@ -16,7 +16,15 @@ export default function Router() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<Spinner animation="grow" variant="primary" />}>
+      <Suspense
+        fallback={
+          <Row>
+            <Col xs={12} className="d-flex justify-content-center">
+              <Spinner animation="grow" variant="primary" />
+            </Col>
+          </Row>
+        }
+      >
         <Switch>
           <Route exact path="/login">
             {session.isLoggedIn ? <Redirect to="/" /> : <Login />}
