@@ -51,3 +51,13 @@
 .list-group-item p {
     margin-bottom: 0;
 }
+
+.list-container .col {
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.list-headers {
+    padding: 0 1.5rem;
+    padding-bottom: 0.5rem;
+}

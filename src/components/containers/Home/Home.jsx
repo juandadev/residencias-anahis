@@ -6,6 +6,9 @@ import Layout from '../Layout/Layout';
 import { Profile } from '../index';
 
 const Clients = lazy(() => import('../Clients/Clients'));
+const Vendors = lazy(() => import('../Vendors/Vendors'));
+const Products = lazy(() => import('../Products/Products'));
+const Users = lazy(() => import('../Users/Users'));
 
 function Home() {
   const history = useHistory();
@@ -73,11 +76,35 @@ function Home() {
                 )}
               </Tab.Pane>
 
-              <Tab.Pane eventKey="products">Productos</Tab.Pane>
+              <Tab.Pane eventKey="products">
+                {param.tab === 'Productos' && (
+                  <Suspense
+                    fallback={<Spinner animation="grow" variant="primary" />}
+                  >
+                    <Products />
+                  </Suspense>
+                )}
+              </Tab.Pane>
 
-              <Tab.Pane eventKey="vendors">Proveedores</Tab.Pane>
+              <Tab.Pane eventKey="vendors">
+                {param.tab === 'Proveedores' && (
+                  <Suspense
+                    fallback={<Spinner animation="grow" variant="primary" />}
+                  >
+                    <Vendors />
+                  </Suspense>
+                )}
+              </Tab.Pane>
 
-              <Tab.Pane eventKey="users">Usuarios</Tab.Pane>
+              <Tab.Pane eventKey="users">
+                {param.tab === 'Usuarios' && (
+                  <Suspense
+                    fallback={<Spinner animation="grow" variant="primary" />}
+                  >
+                    <Users />
+                  </Suspense>
+                )}
+              </Tab.Pane>
             </Tab.Content>
           </Col>
         </Row>

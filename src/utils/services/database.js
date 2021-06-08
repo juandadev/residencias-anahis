@@ -61,3 +61,30 @@ export const getClients = async () => {
 
   return clients.data;
 };
+
+// Products
+export const getProducts = async () => {
+  const products = await axios
+    .get(`${ENDPOINT_URL}/api/products/`)
+    .then((res) => res.data);
+
+  return products.data;
+};
+
+// Vendors
+export const getVendors = async () => {
+  const vendors = await axios
+    .get(`${ENDPOINT_URL}/api/vendors/`)
+    .then((res) => res.data);
+
+  return vendors.data;
+};
+
+// Users
+export const getUsers = async () => {
+  const users = await axios
+    .get(`${ENDPOINT_URL}/api/users/`)
+    .then((res) => res.data);
+
+  return users.data;
+};
