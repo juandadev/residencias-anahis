@@ -15,10 +15,12 @@ import { store } from '../../../context/store';
  * @param {actions} //functions to perform on module manipulation
  * @returns
  */
-export default function Actions({ module, actions }) {
+export default function Actions({ module, actions, id }) {
   const { state } = useContext(store);
   const { selected } = state;
   const [insert, setInsert] = useState({});
+  const [edit, setEdit] = useState({});
+  const [selectedRecord, setSelectedRecord] = useState(0);
   const [modal, setModal] = useState({
     insert: false,
     delete: false,
@@ -34,15 +36,25 @@ export default function Actions({ module, actions }) {
     }));
   }
 
-  function handleChange(e) {
+  function handleChange(e, modal) {
     const { name, value } = e.target;
     const data = {};
     data[name] = value;
 
-    setInsert((state) => ({
-      ...state,
-      ...data,
-    }));
+    const options = {
+      insert: () =>
+        setInsert((state) => ({
+          ...state,
+          ...data,
+        })),
+      edit: () =>
+        setEdit((state) => ({
+          ...state,
+          ...data,
+        })),
+    };
+
+    options[modal]();
   }
 
   function initializeInsertData() {
@@ -53,8 +65,30 @@ export default function Actions({ module, actions }) {
     setInsert(insertData);
   }
 
+  function initializeEditData(identifier) {
+    let editData = {};
+    const findRecord = actions?.edit[2].find(
+      (item) => item[[`id_${id}`]] === parseInt(identifier, 10)
+    );
+
+    if (!findRecord) {
+      editData = actions?.edit[1].reduce(
+        (o, key) => ({ ...o, [key[1]]: '' }),
+        {}
+      );
+    } else {
+      editData = actions?.edit[1].reduce(
+        (o, key) => ({ ...o, [key[1]]: findRecord[`${key[1]}_${id}`] }),
+        {}
+      );
+    }
+
+    setEdit(editData);
+  }
+
   useEffect(() => {
     initializeInsertData();
+    initializeEditData();
   }, []);
 
   return (
@@ -87,7 +121,13 @@ export default function Actions({ module, actions }) {
         >
           <Button
             variant="secondary"
-            onClick={actions?.edit}
+            onClick={() =>
+              setModal((state) => ({
+                ...state,
+                edit: true,
+                content: actions?.edit[1],
+              }))
+            }
             disabled={!actions?.edit}
           >
             <i className="fas fa-edit" />
@@ -168,7 +208,91 @@ export default function Actions({ module, actions }) {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={modal.insert} onHide={() => handleClose('insert')}>
+      <Modal
+        show={modal.edit}
+        onHide={() => {
+          handleClose('edit');
+          initializeEditData();
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{`Editar ${module}`}</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="user">
+              <Form.Label>{`Selecciona al ${module} a editar:`}</Form.Label>
+
+              <select
+                name="id"
+                id="id"
+                className="form-select"
+                onChange={(e) => {
+                  initializeEditData(e.target.value);
+                  setSelectedRecord(e.target.value);
+                }}
+              >
+                <option value="default">seleccionar</option>
+                {actions?.edit[2].map((item, index) => (
+                  <option key={`user-option-${index}`} value={item[`id_${id}`]}>
+                    {item[`name_${id}`]}
+                  </option>
+                ))}
+              </select>
+            </Form.Group>
+
+            {actions?.edit[1].map((item, index) => (
+              <Form.Group
+                key={`${module}-input-${index}`}
+                className="mb-3"
+                controlId={item[1]}
+              >
+                <Form.Label>{item[2]}</Form.Label>
+
+                <Form.Control
+                  type={item[0]}
+                  name={item[1]}
+                  value={edit[item[1]]}
+                  onChange={(e) => handleChange(e, 'edit')}
+                  required
+                />
+              </Form.Group>
+            ))}
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleClose('edit');
+              initializeEditData();
+            }}
+          >
+            Cancelar
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={() => {
+              actions?.edit[0](selectedRecord, edit);
+              initializeEditData();
+              handleClose('edit');
+            }}
+          >
+            {`Actualizar ${module}`}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={modal.insert}
+        onHide={() => {
+          handleClose('insert');
+          initializeInsertData();
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>{`Nuevo ${module}`}</Modal.Title>
         </Modal.Header>
@@ -187,7 +311,7 @@ export default function Actions({ module, actions }) {
                   type={item[0]}
                   name={item[1]}
                   value={insert[item[1]]}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e, 'insert')}
                   required
                 />
               </Form.Group>
@@ -205,6 +329,7 @@ export default function Actions({ module, actions }) {
             onClick={() => {
               actions?.new[0](insert);
               initializeInsertData();
+              handleClose('insert');
             }}
           >
             {`Crear ${module}`}
