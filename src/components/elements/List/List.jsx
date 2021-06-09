@@ -37,7 +37,7 @@ export default function List({ id, data, structure }) {
       </Row>
 
       <ListGroup>
-        {data ? (
+        {data.length !== 0 ? (
           data.map((item, index) => (
             <ListGroup.Item key={`${id}-${index}`} action>
               <Row>
