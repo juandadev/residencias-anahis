@@ -5,6 +5,7 @@ import CheckBox from '../CheckBox/CheckBox';
 
 export default function List({ id, data, structure }) {
   const [selected, setSelected] = useState([]);
+  const [foreign, setForeign] = useState([]);
   const { dispatch } = useContext(store);
 
   function handleSelected(item) {
@@ -20,9 +21,17 @@ export default function List({ id, data, structure }) {
     });
   }
 
+  function searchForeignKeys(records) {
+    const result = records.map((record) => Object.keys(record));
+    const foreignKeys = result[0].filter((record) => record.includes('fk'));
+
+    setForeign(foreignKeys);
+  }
+
   useEffect(() => {
+    if (data.length !== 0) searchForeignKeys(data);
     dispatch({ type: 'SET_SELECTED', selected });
-  }, [selected]);
+  }, [selected, data]);
 
   return (
     <div className="list-container mt-3">
@@ -46,7 +55,7 @@ export default function List({ id, data, structure }) {
                     {structure[Object.keys(structure)[index]].map(
                       (data, index) =>
                         // TODO: Change data properties for objects instead of arrays
-                        data[0] === 'badge' ? (
+                        (data[0] === 'badge' && (
                           <Badge
                             key={`${id}-badge-${index}`}
                             variant={item[data[1]]}
@@ -57,11 +66,22 @@ export default function List({ id, data, structure }) {
                                 'Menos solicitado') ||
                               (item[data[1]] === 'danger' && 'Solicitado')}
                           </Badge>
-                        ) : (
+                        )) ||
+                        (data[1].includes('store') && (
+                          <p key={`${id}-text-${index}`} className={data[0]}>
+                            {(item[data[1]] === 1 && 'delicias') ||
+                              (item[data[1]] === 2 && 'jiménez') ||
+                              (item[data[1]] === 3 && 'cuauhtémoc') ||
+                              (item[data[1]] === 4 && 'casas grandes') ||
+                              (item[data[1]] === 5 && 'torreón') ||
+                              (item[data[1]] === 6 && 'durango')}
+                          </p>
+                        )) ||
+                        (data[0] && (
                           <p key={`${id}-text-${index}`} className={data[0]}>
                             {item[data[1]]}
                           </p>
-                        )
+                        ))
                     )}
                   </Col>
                 ))}

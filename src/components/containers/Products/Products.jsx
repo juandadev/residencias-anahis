@@ -32,7 +32,7 @@ export default function products() {
                   ['text-black-50', 'key_product'],
                 ],
                 Existencias: [
-                  ['', 'stock_product'],
+                  ['text-body', 'stock_product'],
                   ['text-capitalize text-black-50', 'fk_store_id'],
                 ],
                 Estatus: [['badge', 'state_product']],
