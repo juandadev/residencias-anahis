@@ -95,6 +95,30 @@ export const getProducts = async () => {
   return products.data;
 };
 
+export const insertProduct = async (data) => {
+  const product = await axios
+    .post(`${ENDPOINT_URL}/api/products/`, data)
+    .then((res) => res.data);
+
+  return product.data;
+};
+
+export const modifyProduct = async (id, data) => {
+  const product = await axios
+    .put(`${ENDPOINT_URL}/api/products/${id}`, data)
+    .then((res) => res.data);
+
+  return product.data;
+};
+
+export const removeProduct = async (id) => {
+  const product = await axios
+    .delete(`${ENDPOINT_URL}/api/products/${id}`)
+    .then((res) => res.data);
+
+  return product.data;
+};
+
 // Vendors
 export const getVendors = async () => {
   const vendors = await axios

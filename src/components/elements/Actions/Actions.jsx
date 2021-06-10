@@ -85,22 +85,33 @@ export default function Actions({ module, actions, id }) {
 
     if (!findRecord) {
       editData = actions?.edit[1].reduce(
-        (o, key) => ({ ...o, [key[1]]: '' }),
+        (acc, item) => ({ ...acc, [item[1]]: '' }),
         {}
       );
     } else {
       editData = actions?.edit[1].reduce(
-        (o, key) => ({ ...o, [key[1]]: findRecord[`${key[1]}_${id}`] }),
+        (acc, item) => ({ ...acc, [item[1]]: findRecord[`${item[1]}_${id}`] }),
         {}
       );
     }
 
-    const isSelect = actions?.new[1].find((item) => item[0] === 'select');
+    const isSelect = actions?.new[1].filter((item) => item[0] === 'select');
+    const selectValues = isSelect.map((select) => [
+      select[1],
+      findRecord?.[`${select[1]}_${id}`] || findRecord?.[`fk_${select[1]}_id`],
+    ]);
+    const selectObject = selectValues.reduce(
+      (acc, item) => ({
+        ...acc,
+        [item[0]]: item[1],
+      }),
+      {}
+    );
 
     if (isSelect && findRecord) {
       setEdit((state) => ({
         ...editData,
-        [isSelect[1]]: findRecord[`${isSelect[1]}_${id}`],
+        ...selectObject,
       }));
     } else {
       setEdit(editData);
@@ -207,7 +218,6 @@ export default function Actions({ module, actions, id }) {
         </OverlayTrigger>
       </ButtonGroup>
 
-      {/* Delete */}
       <Modal show={modal.delete} onHide={() => handleClose('delete')}>
         <Modal.Header closeButton>
           <Modal.Title>{`Eliminar ${module}`}</Modal.Title>
@@ -236,7 +246,6 @@ export default function Actions({ module, actions, id }) {
         </Modal.Footer>
       </Modal>
 
-      {/* Edit */}
       <Modal
         show={modal.edit}
         onHide={() => {
@@ -281,14 +290,14 @@ export default function Actions({ module, actions, id }) {
                   <Form.Label>{item[2]}</Form.Label>
 
                   <select
-                    name="level"
-                    id="level"
+                    name={`${item[1]}`}
+                    id={`${module}-select-${item[1]}`}
                     className="form-select"
                     value={edit[item[1]]}
                     onChange={(e) =>
                       setEdit((state) => ({
                         ...state,
-                        level: e.target.value,
+                        [e.target.name]: e.target.value,
                       }))
                     }
                   >
@@ -347,7 +356,6 @@ export default function Actions({ module, actions, id }) {
         </Modal.Footer>
       </Modal>
 
-      {/* Insert */}
       <Modal
         show={modal.insert}
         onHide={() => {
@@ -371,14 +379,14 @@ export default function Actions({ module, actions, id }) {
                   <Form.Label>{item[2]}</Form.Label>
 
                   <select
-                    name="level"
-                    id="level"
+                    name={`${item[1]}`}
+                    id={`${module}-select-${item[1]}`}
                     className="form-select"
                     value={insert[item[1]]}
                     onChange={(e) =>
                       setInsert((state) => ({
                         ...state,
-                        level: e.target.value,
+                        [e.target.name]: e.target.value,
                       }))
                     }
                   >
