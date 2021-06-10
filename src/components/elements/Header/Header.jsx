@@ -1,28 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Container, Navbar, NavDropdown, Image } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
-import { store } from '../../../context/store';
-import CookieService from '../../../utils/services/cookie';
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Container, Navbar, NavDropdown, Image } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { store } from "../../../context/store";
+import CookieService from "../../../utils/services/cookie";
 
 export default function Header() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const { state, dispatch } = useContext(store);
   const param = useParams();
   const { session } = state;
 
   function splitUserName() {
-    const separatedName = session.name.split(' ');
+    const separatedName = session.name.split(" ");
 
     return `${separatedName[0]} ${separatedName[1]}`;
   }
 
   function handleLogOut() {
-    dispatch({ type: 'SESSION_END' });
-    CookieService.remove('access_token');
+    dispatch({ type: "SESSION_END" });
+    CookieService.remove("access_token");
   }
 
   useEffect(() => {
-    document.title = `${param.tab || 'Inicio'} | Tractores del Norte`;
+    document.title = `${param.tab || "Inicio"} | Tractores del Norte`;
     if (session.isLoggedIn) setName(splitUserName());
   }, [param]);
 
