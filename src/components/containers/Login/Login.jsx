@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Form, Button, Card, Alert } from 'react-bootstrap';
-import { store } from '../../../context/store';
-import CookieService from '../../../utils/services/cookie';
-import { loginUser, verifyToken } from '../../../utils/services/database';
-import Layout from '../Layout/Layout';
+import React, { useState, useEffect, useContext } from "react";
+import { Form, Button, Card, Alert } from "react-bootstrap";
+import { store } from "../../../context/store";
+import CookieService from "../../../utils/services/cookie";
+import { loginUser, verifyToken } from "../../../utils/services/database";
+import Layout from "../Layout/Layout";
+import CheckBox from "../../elements/CheckBox/CheckBox";
 
 export default function Login() {
   const [alert, setAlert] = useState({
     show: false,
-    message: '',
-    variant: '',
+    message: "",
+    variant: "",
   });
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     remember: false,
   });
   const [validated, setValidated] = useState(false);
@@ -27,21 +28,21 @@ export default function Login() {
       e.stopPropagation();
       const res = await loginUser({ ...formData });
 
-      if (res.type === 'success') {
+      if (res.type === "success") {
         if (formData.remember) {
-          CookieService.set('access_token', res.user.token, { path: '/' });
+          CookieService.set("access_token", res.user.token, { path: "/" });
         } else {
           const date = new Date();
           date.setTime(date.getTime() + 60 * 24 * 60 * 1000);
 
-          CookieService.set('access_token', res.user.token, {
-            path: '/',
+          CookieService.set("access_token", res.user.token, {
+            path: "/",
             expires: date,
           });
         }
 
         dispatch({
-          type: 'SESSION_START',
+          type: "SESSION_START",
           user: {
             id: res.user.id_user,
             name: res.user.name_user,
@@ -77,10 +78,10 @@ export default function Login() {
   }
 
   useEffect(() => {
-    document.title = 'Iniciar sesión | Tractores del Norte';
+    document.title = "Iniciar sesión | Tractores del Norte";
     verifyToken().then((res) => {
       if (res.data) {
-        dispatch({ type: 'SESSION_START', user: res.data });
+        dispatch({ type: "SESSION_START", user: res.data });
       }
     });
   }, []);
@@ -127,9 +128,8 @@ export default function Login() {
             </Form.Group>
 
             <Form.Group controlId="remember">
-              <Form.Check
-                type="checkbox"
-                name="remember"
+              <CheckBox
+                id="remember"
                 label="Mantener sesión iniciada"
                 onClick={handleChange}
               />
@@ -145,9 +145,9 @@ export default function Login() {
                   dismissible
                 >
                   <Alert.Heading>
-                    {alert.variant === 'danger'
-                      ? 'Error al iniciar sesión'
-                      : '¡Éxito!'}
+                    {alert.variant === "danger"
+                      ? "Error al iniciar sesión"
+                      : "¡Éxito!"}
                   </Alert.Heading>
 
                   <p>{alert.message}</p>

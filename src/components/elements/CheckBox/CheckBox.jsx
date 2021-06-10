@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function CheckBox({ id, label, onClick }) {
   return (
@@ -7,6 +7,7 @@ export default function CheckBox({ id, label, onClick }) {
         type="checkbox"
         className="custom-control-input"
         id={id}
+        name={id}
         onClick={onClick}
       />
 
