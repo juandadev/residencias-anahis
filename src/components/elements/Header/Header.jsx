@@ -32,7 +32,7 @@ export default function Header() {
         <Container>
           <Navbar.Brand>
             <img
-              src="http://tractoresdelnorte.com/images/Logos/logoTNO.png"
+              src="https://imgur.com/qpd0Dv7.png"
               width={281.7}
               height={80}
               alt="Tractores del norte logo"

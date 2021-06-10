@@ -10,12 +10,6 @@ import {
 import { store } from '../../../context/store';
 import Alert from '../Alert/Alert';
 
-/**
- * Component to manage the basic CRUD actions (create, read, update, delete)
- * @param {module} //Module name
- * @param {actions} //functions to perform on module manipulation
- * @returns
- */
 export default function Actions({ module, actions, id }) {
   const { state } = useContext(store);
   const { selected } = state;
