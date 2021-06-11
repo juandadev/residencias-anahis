@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Container, Navbar, NavDropdown, Image } from "react-bootstrap";
+import { Button, Container, Navbar, NavDropdown } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { store } from "../../../context/store";
 import CookieService from "../../../utils/services/cookie";
@@ -38,16 +38,18 @@ export default function Header() {
               alt="Tractores del norte logo"
             />
           </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav" className="justify-content-end">
+            {session.isLoggedIn && (
+              <NavDropdown title={name} id="session-menu">
+                <NavDropdown.Divider />
 
-          {session.isLoggedIn && (
-            <NavDropdown title={name} id="session-menu">
-              <NavDropdown.Divider />
-
-              <NavDropdown.Item onClick={handleLogOut}>
-                <Button variant="primary">Cerrar sesión</Button>
-              </NavDropdown.Item>
-            </NavDropdown>
-          )}
+                <NavDropdown.Item onClick={handleLogOut}>
+                  <Button variant="primary">Cerrar sesión</Button>
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </header>

@@ -7,11 +7,12 @@ import {
   modifyClient,
   removeClient,
 } from "../../../utils/services/database";
-import { Actions, List } from "../../elements/index";
+import { Actions, List, SearchInput } from "../../elements/index";
 
 export default function Clients() {
   const { dispatch } = useContext(store);
   const [clients, setClients] = useState([]);
+  const [filteredClients, setFilteredClients] = useState([]);
   const [response, setResponse] = useState(null);
 
   function handleInsert(data) {
@@ -30,7 +31,10 @@ export default function Clients() {
   }
 
   useEffect(() => {
-    getClients().then((res) => setClients(res));
+    getClients().then((res) => {
+      setClients(res);
+      setFilteredClients(res);
+    });
   }, [response]);
 
   return (
@@ -72,9 +76,14 @@ export default function Clients() {
 
         <Row>
           <Col>
+            <SearchInput
+              data={clients}
+              setData={setFilteredClients}
+              module="client"
+            />
             <List
               id="client"
-              data={clients}
+              data={filteredClients}
               structure={{
                 "Información personal": [
                   ["font-weight-bold text-capitalize", "name_client"],
