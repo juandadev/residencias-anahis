@@ -42,7 +42,7 @@ export default function Actions({ module, actions, id }) {
   function handleChange(e, modal) {
     const { name, value } = e.target;
     const data = {};
-    data[name] = value;
+    data[name] = value.toLowerCase();
 
     const options = {
       insert: () =>
