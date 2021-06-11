@@ -136,10 +136,6 @@ export default function Actions({ module, actions, id }) {
     }
   }
 
-  function filterColumns(data) {
-    const columns = Object.keys(data[0]);
-  }
-
   useEffect(() => {
     initializeInsertData();
     initializeEditData();
@@ -266,23 +262,43 @@ export default function Actions({ module, actions, id }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Exportar archivo Excel</Tooltip>}
         >
-          {/* {id === "client" && (
-            <ExcelClients data={actions?.edit[2]} module={id} />
-          )} */}
           <Button variant="excel" disabled={actions?.edit[2].length === 0}>
             {actions?.edit[2].length === 0 ? (
               <Spinner animation="grow" size="sm" />
             ) : (
               <CSVLink
                 className="export-link"
-                data={actions?.edit[2]}
+                data={actions?.excel || actions?.edit[2]}
                 headers={
-                  id === "client" && [
+                  (id === "client" && [
                     { label: "Nombre", key: `name_${id}` },
                     { label: "Dirección", key: `address_${id}` },
                     { label: "Teléfono", key: `phone_${id}` },
                     { label: "Correo", key: `email_${id}` },
-                  ]
+                  ]) ||
+                  (id === "product" && [
+                    { label: "Clave", key: `key_${id}` },
+                    { label: "Nombre", key: `name_${id}` },
+                    { label: "Categoría", key: `category_${id}` },
+                    { label: "Almacén", key: `store_${id}` },
+                    { label: "Existencias", key: `stock_${id}` },
+                    { label: "Proveedor", key: `vendor_${id}` },
+                    { label: "Estatus", key: `state_${id}` },
+                  ]) ||
+                  (id === "vendor" && [
+                    { label: "Nombre", key: `name_${id}` },
+                    { label: "Razón social", key: `social_${id}` },
+                    { label: "Teléfono", key: `phone_${id}` },
+                    { label: "Dirección", key: `address_${id}` },
+                    { label: "Cuenta bancaria", key: `bank_${id}` },
+                  ]) ||
+                  (id === "user" && [
+                    { label: "Nombre", key: `name_${id}` },
+                    { label: "Dirección", key: `address_${id}` },
+                    { label: "Teléfono", key: `phone_${id}` },
+                    { label: "Correo", key: `email_${id}` },
+                    { label: "Nivel", key: `level_${id}` },
+                  ])
                 }
                 filename={`${
                   module === "proveedor" ? `${module}es` : `${module}s`

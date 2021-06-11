@@ -183,6 +183,7 @@ export default function products() {
                   ],
                   vendors,
                 ],
+                excel: detailedProducts,
               }}
             />
           </Col>
