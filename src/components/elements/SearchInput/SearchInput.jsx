@@ -4,8 +4,17 @@ import { Form, Spinner } from "react-bootstrap";
 export default function SearchInput({ data, setData, module }) {
   function handleChange(e) {
     const { value } = e.target;
-    const filteredData = data?.filter((item) =>
-      item[`name_${module}`].includes(value.toLowerCase())
+    const filteredData = data?.filter(
+      (item) =>
+        item[`name_${module}`]?.includes(value.toLowerCase()) > 0 ||
+        item[`address_${module}`]?.includes(value.toLowerCase()) > 0 ||
+        item[`phone_${module}`]?.toString().includes(value.toLowerCase()) > 0 ||
+        item[`email_${module}`]?.includes(value.toLowerCase()) > 0 ||
+        item[`stock_${module}`]?.toString().includes(value.toLowerCase()) > 0 ||
+        item[`social_${module}`]?.includes(value.toLowerCase()) > 0 ||
+        item[`bank_${module}`]?.toString().includes(value.toLowerCase()) > 0 ||
+        item[`level_${module}`]?.includes(value.toLowerCase()) > 0 ||
+        item[`state_${module}`]?.includes(value.toLowerCase()) > 0
     );
 
     setData(filteredData);
