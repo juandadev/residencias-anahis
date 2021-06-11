@@ -20,6 +20,7 @@ import Alert from "../Alert/Alert";
 export default function Actions({ module, actions, id }) {
   const { state } = useContext(store);
   const { selected } = state;
+  const [validated, setValidated] = useState(false);
   const [alert, setAlert] = useState(false);
   const [insert, setInsert] = useState({});
   const [edit, setEdit] = useState({});
@@ -310,7 +311,25 @@ export default function Actions({ module, actions, id }) {
         </Modal.Header>
 
         <Modal.Body>
-          <Form>
+          <Form
+            noValidate
+            validated={validated}
+            name="edit"
+            id="edit"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+
+              if (form.checkValidity() === true) {
+                e.stopPropagation();
+                actions?.edit[0](selectedRecord, edit);
+                initializeEditData();
+                handleClose("edit");
+              }
+
+              setValidated(true);
+            }}
+          >
             <Form.Group controlId="user">
               <Form.Label>{`Selecciona al ${module} a editar:`}</Form.Label>
 
@@ -322,6 +341,7 @@ export default function Actions({ module, actions, id }) {
                   initializeEditData(e.target.value);
                   setSelectedRecord(e.target.value);
                 }}
+                required
               >
                 <option value="default">seleccionar</option>
                 {actions?.edit[2].map((item, index) => (
@@ -352,6 +372,7 @@ export default function Actions({ module, actions, id }) {
                         [e.target.name]: e.target.value,
                       }))
                     }
+                    required
                   >
                     {item[3].map((option, index) => (
                       <option
@@ -395,14 +416,7 @@ export default function Actions({ module, actions, id }) {
             Cancelar
           </Button>
 
-          <Button
-            variant="primary"
-            onClick={() => {
-              actions?.edit[0](selectedRecord, edit);
-              initializeEditData();
-              handleClose("edit");
-            }}
-          >
+          <Button variant="primary" type="submit" form="edit">
             {`Actualizar ${module}`}
           </Button>
         </Modal.Footer>
@@ -420,7 +434,25 @@ export default function Actions({ module, actions, id }) {
         </Modal.Header>
 
         <Modal.Body>
-          <Form>
+          <Form
+            noValidate
+            validated={validated}
+            name="insert"
+            id="insert"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+
+              if (form.checkValidity() === true) {
+                e.stopPropagation();
+                actions?.new[0](insert);
+                initializeInsertData();
+                handleClose("insert");
+              }
+
+              setValidated(true);
+            }}
+          >
             {actions?.new[1].map((item, index) =>
               item[0] === "select" ? (
                 <Form.Group
@@ -478,14 +510,7 @@ export default function Actions({ module, actions, id }) {
             Cancelar
           </Button>
 
-          <Button
-            variant="primary"
-            onClick={() => {
-              actions?.new[0](insert);
-              initializeInsertData();
-              handleClose("insert");
-            }}
-          >
+          <Button variant="primary" type="submit" form="insert">
             {`Crear ${module}`}
           </Button>
         </Modal.Footer>
