@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Col, Image, Jumbotron, Row } from 'react-bootstrap';
-import { store } from '../../../context/store';
-import { getUser } from '../../../utils/services/database';
+import React, { useEffect, useState, useContext } from "react";
+import { Col, Image, Jumbotron, Row } from "react-bootstrap";
+import { store } from "../../../context/store";
+import { getUser } from "../../../utils/services/database";
 
 export default function Profile() {
   const { state } = useContext(store);
   const { session } = state;
   const [profileData, setProfileData] = useState({
     id: 0,
-    name: '',
-    address: '',
-    phone: '',
-    email: '',
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
   });
 
   useEffect(() => {
@@ -29,7 +29,6 @@ export default function Profile() {
   return (
     <>
       <h1>Perfil de usuario</h1>
-
       <Jumbotron>
         <Row>
           <Col
@@ -39,7 +38,6 @@ export default function Profile() {
           >
             <h2>Datos personales</h2>
           </Col>
-
           <Col
             md={3}
             xs={12}
@@ -50,16 +48,16 @@ export default function Profile() {
               height={100}
               src={
                 profileData.image ||
-                'https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1-744x744.jpg'
+                "https://moonvillageassociation.org/wp-content/uploads/2018/06/default-profile-picture1-744x744.jpg"
               }
               alt={`Foto de perfil de ${profileData.name}`}
               roundedCircle
             />
-
-            <p className="h5 text-center">{profileData.name}</p>
+            <p className="h5 text-center text-capitalize mt-2">
+              {profileData.name}
+            </p>
           </Col>
         </Row>
-
         <Row>
           <Col xs={3}>
             <p className="text-black-50">ID</p>
@@ -67,10 +65,9 @@ export default function Profile() {
             <p className="text-black-50">Teléfono</p>
             <p className="text-black-50">Correo electrónico</p>
           </Col>
-
           <Col xs={9}>
             <p className="text-left">{profileData.id}</p>
-            <p className="text-left">{profileData.address}</p>
+            <p className="text-left text-capitalize">{profileData.address}</p>
             <p className="text-left">{profileData.phone}</p>
             <p className="text-left">{profileData.email}</p>
           </Col>

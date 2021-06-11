@@ -115,7 +115,7 @@ export default function users() {
                   ["text-black-50 text-capitalize", "address_user"],
                 ],
                 "Información de contacto": [
-                  ["", "email_user"],
+                  ["text-body", "email_user"],
                   ["text-black-50", "phone_user"],
                 ],
                 Nivel: [["text-capitalize", "level_user"]],

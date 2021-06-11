@@ -41,9 +41,12 @@ export default function Header() {
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav" className="justify-content-end">
             {session.isLoggedIn && (
-              <NavDropdown title={name} id="session-menu">
+              <NavDropdown
+                title={name}
+                id="session-menu"
+                className="text-capitalize"
+              >
                 <NavDropdown.Divider />
-
                 <NavDropdown.Item onClick={handleLogOut}>
                   <Button variant="primary">Cerrar sesión</Button>
                 </NavDropdown.Item>
