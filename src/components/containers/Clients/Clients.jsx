@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Col, Jumbotron, Row } from 'react-bootstrap';
-import { store } from '../../../context/store';
+import React, { useEffect, useState, useContext } from "react";
+import { Col, Jumbotron, Row } from "react-bootstrap";
+import { store } from "../../../context/store";
 import {
   getClients,
   insertClient,
   modifyClient,
   removeClient,
-} from '../../../utils/services/database';
-import { Actions, List } from '../../elements/index';
+} from "../../../utils/services/database";
+import { Actions, List } from "../../elements/index";
 
 export default function Clients() {
   const { dispatch } = useContext(store);
@@ -24,7 +24,7 @@ export default function Clients() {
 
   function handleDelete(data) {
     Promise.resolve(data.forEach((item) => removeClient(item))).then((res) =>
-      dispatch({ type: 'SET_SELECTED', selected: [] })
+      dispatch({ type: "SET_SELECTED", selected: [] })
     );
     setResponse(data);
   }
@@ -47,23 +47,24 @@ export default function Clients() {
                 new: [
                   handleInsert,
                   [
-                    ['text', 'name', 'Nombre'],
-                    ['text', 'address', 'Dirección'],
-                    ['text', 'phone', 'Teléfono'],
-                    ['email', 'email', 'Correo electrónico'],
+                    ["text", "name", "Nombre"],
+                    ["text", "address", "Dirección"],
+                    ["text", "phone", "Teléfono"],
+                    ["email", "email", "Correo electrónico"],
                   ],
                 ],
                 delete: [handleDelete],
                 edit: [
                   handleUpdate,
                   [
-                    ['text', 'name', 'Nombre'],
-                    ['text', 'address', 'Dirección'],
-                    ['text', 'phone', 'Teléfono'],
-                    ['email', 'email', 'Correo electrónico'],
+                    ["text", "name", "Nombre"],
+                    ["text", "address", "Dirección"],
+                    ["text", "phone", "Teléfono"],
+                    ["email", "email", "Correo electrónico"],
                   ],
                   clients,
                 ],
+                pdf: ["#", "Nombre", "Dirección", "Teléfono", "Correo"],
               }}
             />
           </Col>
@@ -75,13 +76,13 @@ export default function Clients() {
               id="client"
               data={clients}
               structure={{
-                'Información personal': [
-                  ['font-weight-bold text-capitalize', 'name_client'],
-                  ['text-black-50 text-capitalize', 'address_client'],
+                "Información personal": [
+                  ["font-weight-bold text-capitalize", "name_client"],
+                  ["text-black-50 text-capitalize", "address_client"],
                 ],
-                'Información de contacto': [
-                  ['', 'email_client'],
-                  ['text-black-50', 'phone_client'],
+                "Información de contacto": [
+                  ["", "email_client"],
+                  ["text-black-50", "phone_client"],
                 ],
               }}
             />

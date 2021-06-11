@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import {
   ButtonGroup,
   Button,
@@ -6,9 +7,15 @@ import {
   Tooltip,
   Modal,
   Form,
-} from 'react-bootstrap';
-import { store } from '../../../context/store';
-import Alert from '../Alert/Alert';
+  Spinner,
+} from "react-bootstrap";
+import { format } from "date-fns";
+import PDFClients from "../PDFDoc/PDFclients";
+import PDFProducts from "../PDFDoc/PDFproducts";
+import PDFVendors from "../PDFDoc/PDFvendors";
+import PDFUsers from "../PDFDoc/PDFusers";
+import { store } from "../../../context/store";
+import Alert from "../Alert/Alert";
 
 export default function Actions({ module, actions, id }) {
   const { state } = useContext(store);
@@ -55,11 +62,11 @@ export default function Actions({ module, actions, id }) {
 
   function initializeInsertData() {
     const insertData = actions?.new[1].reduce(
-      (o, key) => ({ ...o, [key[1]]: '' }),
+      (o, key) => ({ ...o, [key[1]]: "" }),
       {}
     );
 
-    const isSelect = actions?.new[1].find((item) => item[0] === 'select');
+    const isSelect = actions?.new[1].find((item) => item[0] === "select");
 
     if (isSelect) {
       setInsert((state) => ({
@@ -79,7 +86,7 @@ export default function Actions({ module, actions, id }) {
 
     if (!findRecord) {
       editData = actions?.edit[1].reduce(
-        (acc, item) => ({ ...acc, [item[1]]: '' }),
+        (acc, item) => ({ ...acc, [item[1]]: "" }),
         {}
       );
     } else {
@@ -89,7 +96,7 @@ export default function Actions({ module, actions, id }) {
       );
     }
 
-    const isSelect = actions?.new[1].filter((item) => item[0] === 'select');
+    const isSelect = actions?.new[1].filter((item) => item[0] === "select");
     const selectValues = isSelect.map((select) => [
       select[1],
       findRecord?.[`${select[1]}_${id}`] || findRecord?.[`fk_${select[1]}_id`],
@@ -192,9 +199,56 @@ export default function Actions({ module, actions, id }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Exportar archivo PDF</Tooltip>}
         >
-          <Button variant="pdf" onClick={actions?.pdf} disabled={!actions?.pdf}>
-            <i className="fas fa-file-pdf" />
-          </Button>
+          <PDFDownloadLink
+            className="btn btn-pdf"
+            document={
+              (id === "client" && (
+                <PDFClients
+                  data={actions?.edit[2]}
+                  module={module}
+                  cols={actions?.pdf}
+                />
+              )) ||
+              (id === "product" && (
+                <PDFProducts
+                  data={actions?.edit[2]}
+                  module={module}
+                  cols={actions?.pdf}
+                />
+              )) ||
+              (id === "vendor" && (
+                <PDFVendors
+                  data={actions?.edit[2]}
+                  module={module}
+                  cols={actions?.pdf}
+                />
+              )) ||
+              (id === "user" && (
+                <PDFUsers
+                  data={actions?.edit[2]}
+                  module={module}
+                  cols={actions?.pdf}
+                />
+              ))
+            }
+            fileName={`${
+              module === "proveedor" ? `${module}es` : `${module}s`
+            }-reporte-${format(new Date(), "MM-dd-yyyy")}.pdf`}
+          >
+            {({ loading }) =>
+              loading ? (
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (
+                <i className="fas fa-file-pdf" />
+              )
+            }
+          </PDFDownloadLink>
         </OverlayTrigger>
 
         <OverlayTrigger
@@ -212,7 +266,7 @@ export default function Actions({ module, actions, id }) {
         </OverlayTrigger>
       </ButtonGroup>
 
-      <Modal show={modal.delete} onHide={() => handleClose('delete')}>
+      <Modal show={modal.delete} onHide={() => handleClose("delete")}>
         <Modal.Header closeButton>
           <Modal.Title>{`Eliminar ${module}`}</Modal.Title>
         </Modal.Header>
@@ -224,7 +278,7 @@ export default function Actions({ module, actions, id }) {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => handleClose('delete')}>
+          <Button variant="secondary" onClick={() => handleClose("delete")}>
             Cancelar
           </Button>
 
@@ -232,7 +286,7 @@ export default function Actions({ module, actions, id }) {
             variant="primary"
             onClick={() => {
               actions?.delete[0](selected);
-              handleClose('delete');
+              handleClose("delete");
             }}
           >
             {`Eliminar ${module}(s)`}
@@ -243,7 +297,7 @@ export default function Actions({ module, actions, id }) {
       <Modal
         show={modal.edit}
         onHide={() => {
-          handleClose('edit');
+          handleClose("edit");
           initializeEditData();
         }}
       >
@@ -275,7 +329,7 @@ export default function Actions({ module, actions, id }) {
             </Form.Group>
 
             {actions?.edit[1].map((item, index) =>
-              item[0] === 'select' ? (
+              item[0] === "select" ? (
                 <Form.Group
                   key={`${module}-input-${index}`}
                   className="mb-3"
@@ -317,7 +371,7 @@ export default function Actions({ module, actions, id }) {
                     type={item[0]}
                     name={item[1]}
                     value={edit[item[1]]}
-                    onChange={(e) => handleChange(e, 'edit')}
+                    onChange={(e) => handleChange(e, "edit")}
                     required
                   />
                 </Form.Group>
@@ -330,7 +384,7 @@ export default function Actions({ module, actions, id }) {
           <Button
             variant="secondary"
             onClick={() => {
-              handleClose('edit');
+              handleClose("edit");
               initializeEditData();
             }}
           >
@@ -342,7 +396,7 @@ export default function Actions({ module, actions, id }) {
             onClick={() => {
               actions?.edit[0](selectedRecord, edit);
               initializeEditData();
-              handleClose('edit');
+              handleClose("edit");
             }}
           >
             {`Actualizar ${module}`}
@@ -353,7 +407,7 @@ export default function Actions({ module, actions, id }) {
       <Modal
         show={modal.insert}
         onHide={() => {
-          handleClose('insert');
+          handleClose("insert");
           initializeInsertData();
         }}
       >
@@ -364,7 +418,7 @@ export default function Actions({ module, actions, id }) {
         <Modal.Body>
           <Form>
             {actions?.new[1].map((item, index) =>
-              item[0] === 'select' ? (
+              item[0] === "select" ? (
                 <Form.Group
                   key={`${module}-input-${index}`}
                   className="mb-3"
@@ -406,7 +460,7 @@ export default function Actions({ module, actions, id }) {
                     type={item[0]}
                     name={item[1]}
                     value={insert[item[1]]}
-                    onChange={(e) => handleChange(e, 'insert')}
+                    onChange={(e) => handleChange(e, "insert")}
                     required
                   />
                 </Form.Group>
@@ -416,7 +470,7 @@ export default function Actions({ module, actions, id }) {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => handleClose('insert')}>
+          <Button variant="secondary" onClick={() => handleClose("insert")}>
             Cancelar
           </Button>
 
@@ -425,7 +479,7 @@ export default function Actions({ module, actions, id }) {
             onClick={() => {
               actions?.new[0](insert);
               initializeInsertData();
-              handleClose('insert');
+              handleClose("insert");
             }}
           >
             {`Crear ${module}`}
@@ -438,7 +492,7 @@ export default function Actions({ module, actions, id }) {
         setShow={setAlert}
         type="danger"
         message={`Necesitas seleccionar uno o más ${
-          module === 'proveedor' ? `${module}es` : `${module}s`
+          module === "proveedor" ? `${module}es` : `${module}s`
         }`}
       />
     </>

@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Col, Jumbotron, Row } from 'react-bootstrap';
-import { store } from '../../../context/store';
+import React, { useEffect, useState, useContext } from "react";
+import { Col, Jumbotron, Row } from "react-bootstrap";
+import { store } from "../../../context/store";
 import {
   getUsers,
   insertUser,
   modifyUser,
   removeUser,
-} from '../../../utils/services/database';
-import { Actions, List } from '../../elements/index';
+} from "../../../utils/services/database";
+import { Actions, List } from "../../elements/index";
 
 export default function users() {
   const { dispatch } = useContext(store);
@@ -24,7 +24,7 @@ export default function users() {
 
   function handleDelete(data) {
     Promise.resolve(data.forEach((item) => removeUser(item))).then((res) =>
-      dispatch({ type: 'SET_SELECTED', selected: [] })
+      dispatch({ type: "SET_SELECTED", selected: [] })
     );
     setResponse(data);
   }
@@ -47,18 +47,18 @@ export default function users() {
                 new: [
                   handleInsert,
                   [
-                    ['text', 'name', 'Nombre'],
-                    ['text', 'address', 'Dirección'],
-                    ['text', 'phone', 'Teléfono'],
-                    ['email', 'email', 'Correo electrónico'],
-                    ['password', 'password', 'Contraseña'],
+                    ["text", "name", "Nombre"],
+                    ["text", "address", "Dirección"],
+                    ["text", "phone", "Teléfono"],
+                    ["email", "email", "Correo electrónico"],
+                    ["password", "password", "Contraseña"],
                     [
-                      'select',
-                      'level',
-                      'Nivel',
+                      "select",
+                      "level",
+                      "Nivel",
                       [
-                        ['user', 'usuario'],
-                        ['admin', 'administrador'],
+                        ["user", "usuario"],
+                        ["admin", "administrador"],
                       ],
                     ],
                   ],
@@ -67,22 +67,30 @@ export default function users() {
                 edit: [
                   handleUpdate,
                   [
-                    ['text', 'name', 'Nombre'],
-                    ['text', 'address', 'Dirección'],
-                    ['text', 'phone', 'Teléfono'],
-                    ['email', 'email', 'Correo electrónico'],
-                    ['password', 'password', 'Contraseña'],
+                    ["text", "name", "Nombre"],
+                    ["text", "address", "Dirección"],
+                    ["text", "phone", "Teléfono"],
+                    ["email", "email", "Correo electrónico"],
+                    ["password", "password", "Contraseña"],
                     [
-                      'select',
-                      'level',
-                      'Nivel',
+                      "select",
+                      "level",
+                      "Nivel",
                       [
-                        ['user', 'usuario'],
-                        ['admin', 'administrador'],
+                        ["user", "usuario"],
+                        ["admin", "administrador"],
                       ],
                     ],
                   ],
                   users,
+                ],
+                pdf: [
+                  "#",
+                  "Nombre",
+                  "Dirección",
+                  "Teléfono",
+                  "Correo",
+                  "Nivel",
                 ],
               }}
             />
@@ -95,15 +103,15 @@ export default function users() {
               id="user"
               data={users}
               structure={{
-                'Información personal': [
-                  ['font-weight-bold text-capitalize', 'name_user'],
-                  ['text-black-50 text-capitalize', 'address_user'],
+                "Información personal": [
+                  ["font-weight-bold text-capitalize", "name_user"],
+                  ["text-black-50 text-capitalize", "address_user"],
                 ],
-                'Información de contacto': [
-                  ['', 'email_user'],
-                  ['text-black-50', 'phone_user'],
+                "Información de contacto": [
+                  ["", "email_user"],
+                  ["text-black-50", "phone_user"],
                 ],
-                Nivel: [['text-capitalize', 'level_user']],
+                Nivel: [["text-capitalize", "level_user"]],
               }}
             />
           </Col>

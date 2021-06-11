@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Col, Jumbotron, Row } from 'react-bootstrap';
+import React, { useEffect, useState, useContext } from "react";
+import { Col, Jumbotron, Row } from "react-bootstrap";
 import {
   getVendors,
   getProducts,
   insertProduct,
   modifyProduct,
   removeProduct,
-} from '../../../utils/services/database';
-import { store } from '../../../context/store';
-import { Actions, List } from '../../elements/index';
+} from "../../../utils/services/database";
+import { store } from "../../../context/store";
+import { Actions, List } from "../../elements/index";
 
 export default function products() {
   const { dispatch } = useContext(store);
@@ -30,7 +30,7 @@ export default function products() {
 
   function handleDelete(data) {
     Promise.resolve(data.forEach((item) => removeProduct(item))).then((res) =>
-      dispatch({ type: 'SET_SELECTED', selected: [] })
+      dispatch({ type: "SET_SELECTED", selected: [] })
     );
     setResponse(data);
   }
@@ -54,40 +54,40 @@ export default function products() {
                 new: [
                   handleInsert,
                   [
-                    ['text', 'key', 'Clave'],
-                    ['text', 'name', 'Nombre'],
+                    ["text", "key", "Clave"],
+                    ["text", "name", "Nombre"],
                     [
-                      'select',
-                      'category',
-                      'Categoría',
+                      "select",
+                      "category",
+                      "Categoría",
                       [
-                        ['1', 'recepción de compra'],
-                        ['2', 'transferencia de orden abierta'],
-                        ['3', 'estatus de inventario'],
-                        ['4', 'transferencia de salida'],
-                        ['5', 'transferencia de entrada'],
-                        ['6', 'transferencia de producto entrante'],
-                        ['7', 'mantenimiento de óptimos'],
+                        ["1", "recepción de compra"],
+                        ["2", "transferencia de orden abierta"],
+                        ["3", "estatus de inventario"],
+                        ["4", "transferencia de salida"],
+                        ["5", "transferencia de entrada"],
+                        ["6", "transferencia de producto entrante"],
+                        ["7", "mantenimiento de óptimos"],
                       ],
                     ],
                     [
-                      'select',
-                      'store',
-                      'Almacén',
+                      "select",
+                      "store",
+                      "Almacén",
                       [
-                        ['1', 'delicias'],
-                        ['2', 'jiménez'],
-                        ['3', 'cuauhtémoc'],
-                        ['4', 'casas grandes'],
-                        ['5', 'torreón'],
-                        ['6', 'durango'],
+                        ["1", "delicias"],
+                        ["2", "jiménez"],
+                        ["3", "cuauhtémoc"],
+                        ["4", "casas grandes"],
+                        ["5", "torreón"],
+                        ["6", "durango"],
                       ],
                     ],
-                    ['text', 'stock', 'Existencias'],
+                    ["text", "stock", "Existencias"],
                     [
-                      'select',
-                      'vendor',
-                      'Proveedor',
+                      "select",
+                      "vendor",
+                      "Proveedor",
                       [
                         ...vendors.map((vendor) => [
                           vendor.id_vendor,
@@ -96,13 +96,13 @@ export default function products() {
                       ],
                     ],
                     [
-                      'select',
-                      'state',
-                      'Estado',
+                      "select",
+                      "state",
+                      "Estado",
                       [
-                        ['success', 'no muy solicitado'],
-                        ['warning', 'menos solicitado'],
-                        ['danger', 'solicitado'],
+                        ["success", "no muy solicitado"],
+                        ["warning", "menos solicitado"],
+                        ["danger", "solicitado"],
                       ],
                     ],
                   ],
@@ -111,40 +111,40 @@ export default function products() {
                 edit: [
                   handleUpdate,
                   [
-                    ['text', 'key', 'Clave'],
-                    ['text', 'name', 'Nombre'],
+                    ["text", "key", "Clave"],
+                    ["text", "name", "Nombre"],
                     [
-                      'select',
-                      'category',
-                      'Categoría',
+                      "select",
+                      "category",
+                      "Categoría",
                       [
-                        ['1', 'recepción de compra'],
-                        ['2', 'transferencia de orden abierta'],
-                        ['3', 'estatus de inventario'],
-                        ['4', 'transferencia de salida'],
-                        ['5', 'transferencia de entrada'],
-                        ['6', 'transferencia de producto entrante'],
-                        ['7', 'mantenimiento de óptimos'],
+                        ["1", "recepción de compra"],
+                        ["2", "transferencia de orden abierta"],
+                        ["3", "estatus de inventario"],
+                        ["4", "transferencia de salida"],
+                        ["5", "transferencia de entrada"],
+                        ["6", "transferencia de producto entrante"],
+                        ["7", "mantenimiento de óptimos"],
                       ],
                     ],
                     [
-                      'select',
-                      'store',
-                      'Almacén',
+                      "select",
+                      "store",
+                      "Almacén",
                       [
-                        ['1', 'delicias'],
-                        ['2', 'jiménez'],
-                        ['3', 'cuauhtémoc'],
-                        ['4', 'casas grandes'],
-                        ['5', 'torreón'],
-                        ['6', 'durango'],
+                        ["1", "delicias"],
+                        ["2", "jiménez"],
+                        ["3", "cuauhtémoc"],
+                        ["4", "casas grandes"],
+                        ["5", "torreón"],
+                        ["6", "durango"],
                       ],
                     ],
-                    ['text', 'stock', 'Existencias'],
+                    ["text", "stock", "Existencias"],
                     [
-                      'select',
-                      'vendor',
-                      'Proveedor',
+                      "select",
+                      "vendor",
+                      "Proveedor",
                       [
                         ...vendors.map((vendor) => [
                           vendor.id_vendor,
@@ -153,17 +153,29 @@ export default function products() {
                       ],
                     ],
                     [
-                      'select',
-                      'state',
-                      'Estado',
+                      "select",
+                      "state",
+                      "Estado",
                       [
-                        ['success', 'no muy solicitado'],
-                        ['warning', 'menos solicitado'],
-                        ['danger', 'solicitado'],
+                        ["success", "no muy solicitado"],
+                        ["warning", "menos solicitado"],
+                        ["danger", "solicitado"],
                       ],
                     ],
                   ],
                   products,
+                ],
+                pdf: [
+                  [
+                    "#",
+                    "Nombre",
+                    "Categoría",
+                    "Almacén",
+                    "Existencias",
+                    "Proveedor",
+                    "Estatus",
+                  ],
+                  vendors,
                 ],
               }}
             />
@@ -177,14 +189,14 @@ export default function products() {
               data={products}
               structure={{
                 Producto: [
-                  ['font-weight-bold text-capitalize', 'name_product'],
-                  ['text-black-50', 'key_product'],
+                  ["font-weight-bold text-capitalize", "name_product"],
+                  ["text-black-50", "key_product"],
                 ],
                 Existencias: [
-                  ['text-body', 'stock_product'],
-                  ['text-capitalize text-black-50', 'fk_store_id'],
+                  ["text-body", "stock_product"],
+                  ["text-capitalize text-black-50", "fk_store_id"],
                 ],
-                Estatus: [['badge', 'state_product']],
+                Estatus: [["badge", "state_product"]],
               }}
             />
           </Col>
