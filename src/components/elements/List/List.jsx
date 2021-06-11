@@ -1,11 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Badge, Col, ListGroup, Row, Spinner } from 'react-bootstrap';
-import { store } from '../../../context/store';
-import CheckBox from '../CheckBox/CheckBox';
+import React, { useState, useContext, useEffect } from "react";
+import { Badge, Col, ListGroup, Row, Spinner } from "react-bootstrap";
+import { store } from "../../../context/store";
 
 export default function List({ id, data, structure }) {
   const [selected, setSelected] = useState([]);
-  const [foreign, setForeign] = useState([]);
   const { dispatch } = useContext(store);
 
   function handleSelected(item) {
@@ -21,16 +19,14 @@ export default function List({ id, data, structure }) {
     });
   }
 
-  function searchForeignKeys(records) {
-    const result = records.map((record) => Object.keys(record));
-    const foreignKeys = result[0].filter((record) => record.includes('fk'));
+  function handleActive(key) {
+    const exists = selected.filter((item) => item === key);
 
-    setForeign(foreignKeys);
+    return exists.length;
   }
 
   useEffect(() => {
-    if (data.length !== 0) searchForeignKeys(data);
-    dispatch({ type: 'SET_SELECTED', selected });
+    dispatch({ type: "SET_SELECTED", selected });
   }, [selected, data]);
 
   return (
@@ -41,40 +37,41 @@ export default function List({ id, data, structure }) {
             {Object.keys(structure)[index]}
           </Col>
         ))}
-
-        <Col xs={1} />
       </Row>
-
       <ListGroup>
         {data.length !== 0 ? (
           data.map((item, index) => (
-            <ListGroup.Item key={`${id}-${index}`} action>
+            <ListGroup.Item
+              key={`${id}-${index}`}
+              action
+              active={handleActive(item[`id_${id}`])}
+              onClick={() => handleSelected(item)}
+            >
               <Row>
                 {[...Array(Object.keys(structure).length)].map((key, index) => (
                   <Col key={`${id}-col-${index}`}>
                     {structure[Object.keys(structure)[index]].map(
                       (data, index) =>
-                        // TODO: Change data properties for objects instead of arrays
-                        (data[0] === 'badge' && (
+                        (data[0] === "badge" && (
                           <Badge
                             key={`${id}-badge-${index}`}
                             variant={item[data[1]]}
                           >
-                            {(item[data[1]] === 'success' &&
-                              'No muy solicitado') ||
-                              (item[data[1]] === 'warning' &&
-                                'Menos solicitado') ||
-                              (item[data[1]] === 'danger' && 'Solicitado')}
+                            {(item[data[1]] === "success" &&
+                              "No muy solicitado") ||
+                              (item[data[1]] === "warning" &&
+                                "Menos solicitado") ||
+                              (item[data[1]] === "danger" && "Solicitado")}
                           </Badge>
                         )) ||
-                        (data[1].includes('store') && (
+                        (data[1].includes("store") && (
                           <p key={`${id}-text-${index}`} className={data[0]}>
-                            {(item[data[1]] === 1 && 'delicias') ||
-                              (item[data[1]] === 2 && 'jiménez') ||
-                              (item[data[1]] === 3 && 'cuauhtémoc') ||
-                              (item[data[1]] === 4 && 'casas grandes') ||
-                              (item[data[1]] === 5 && 'torreón') ||
-                              (item[data[1]] === 6 && 'durango')}
+                            {(item[data[1]] === 1 && "delicias") ||
+                              (item[data[1]] === 2 && "jiménez") ||
+                              (item[data[1]] === 3 && "cuauhtémoc") ||
+                              (item[data[1]] === 4 && "casas grandes") ||
+                              (item[data[1]] === 5 && "torreón") ||
+                              (item[data[1]] === 6 && "durango")}
                           </p>
                         )) ||
                         (data[0] && (
@@ -85,16 +82,6 @@ export default function List({ id, data, structure }) {
                     )}
                   </Col>
                 ))}
-
-                <Col
-                  xs={1}
-                  className="d-flex align-items-center justify-content-center"
-                >
-                  <CheckBox
-                    id={`${id}-select-${index}`}
-                    onClick={() => handleSelected(item)}
-                  />
-                </Col>
               </Row>
             </ListGroup.Item>
           ))
