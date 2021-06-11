@@ -10,6 +10,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { format } from "date-fns";
+import { CSVLink } from "react-csv";
 import PDFClients from "../PDFDoc/PDFclients";
 import PDFProducts from "../PDFDoc/PDFproducts";
 import PDFVendors from "../PDFDoc/PDFvendors";
@@ -133,6 +134,10 @@ export default function Actions({ module, actions, id }) {
         delete: true,
       }));
     }
+  }
+
+  function filterColumns(data) {
+    const columns = Object.keys(data[0]);
   }
 
   useEffect(() => {
@@ -261,12 +266,31 @@ export default function Actions({ module, actions, id }) {
           placement="top"
           overlay={<Tooltip id="tooltip-top">Exportar archivo Excel</Tooltip>}
         >
-          <Button
-            variant="excel"
-            onClick={actions?.excel}
-            disabled={!actions?.excel}
-          >
-            <i className="fas fa-file-excel" />
+          {/* {id === "client" && (
+            <ExcelClients data={actions?.edit[2]} module={id} />
+          )} */}
+          <Button variant="excel" disabled={actions?.edit[2].length === 0}>
+            {actions?.edit[2].length === 0 ? (
+              <Spinner animation="grow" size="sm" />
+            ) : (
+              <CSVLink
+                className="export-link"
+                data={actions?.edit[2]}
+                headers={
+                  id === "client" && [
+                    { label: "Nombre", key: `name_${id}` },
+                    { label: "Dirección", key: `address_${id}` },
+                    { label: "Teléfono", key: `phone_${id}` },
+                    { label: "Correo", key: `email_${id}` },
+                  ]
+                }
+                filename={`${
+                  module === "proveedor" ? `${module}es` : `${module}s`
+                }-reporte-${format(new Date(), "MM-dd-yyyy")}.csv`}
+              >
+                <i className="fas fa-file-excel" />
+              </CSVLink>
+            )}
           </Button>
         </OverlayTrigger>
       </ButtonGroup>
