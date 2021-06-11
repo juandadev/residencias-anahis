@@ -3,6 +3,7 @@ import { Col, Jumbotron, Row } from "react-bootstrap";
 import {
   getVendors,
   getProducts,
+  getDetailedProducts,
   insertProduct,
   modifyProduct,
   removeProduct,
@@ -15,6 +16,7 @@ export default function products() {
   const [products, setProducts] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [detailedProducts, setDetailedProducts] = useState([]);
   const [response, setResponse] = useState(null);
 
   function handleVendors() {
@@ -37,9 +39,10 @@ export default function products() {
   }
 
   useEffect(() => {
-    getProducts().then((res) => {
-      setProducts(res);
+    getProducts().then((res) => setProducts(res));
+    getDetailedProducts().then((res) => {
       setFilteredProducts(res);
+      setDetailedProducts(res);
     });
     handleVendors();
   }, [response]);
@@ -187,7 +190,7 @@ export default function products() {
         <Row>
           <Col>
             <SearchInput
-              data={products}
+              data={detailedProducts}
               setData={setFilteredProducts}
               module="product"
             />
@@ -199,9 +202,13 @@ export default function products() {
                   ["font-weight-bold text-capitalize", "name_product"],
                   ["text-black-50", "key_product"],
                 ],
+                "Categoría y proveedor": [
+                  ["font-weight-bold text-capitalize", "category_product"],
+                  ["text-black-50 text-capitalize", "vendor_product"],
+                ],
                 Existencias: [
                   ["text-body", "stock_product"],
-                  ["text-capitalize text-black-50", "fk_store_id"],
+                  ["text-capitalize text-black-50", "store_product"],
                 ],
                 Estatus: [["badge", "state_product"]],
               }}

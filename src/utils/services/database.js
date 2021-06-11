@@ -1,10 +1,10 @@
-import axios from 'axios';
-import CookieService from './cookie';
+import axios from "axios";
+import CookieService from "./cookie";
 
-const ENDPOINT_URL = 'https://mysterious-everglades-14603.herokuapp.com';
+const ENDPOINT_URL = "https://mysterious-everglades-14603.herokuapp.com";
 
 export const verifyToken = async () => {
-  const token = CookieService.get('access_token');
+  const token = CookieService.get("access_token");
   const decode = await axios
     .get(`${ENDPOINT_URL}/api/users/decode/${token}`)
     .then((res) => res.data);
@@ -28,20 +28,20 @@ export const loginUser = async (credentials) => {
 
     if (userAuthorized)
       return {
-        type: 'success',
-        message: '¡Inicio de sesión exitoso!',
+        type: "success",
+        message: "¡Inicio de sesión exitoso!",
         user: userAuthorized,
       };
 
     return {
-      type: 'danger',
-      message: 'La contraseña introducida es incorrecta',
+      type: "danger",
+      message: "La contraseña introducida es incorrecta",
     };
   }
 
   return {
-    type: 'danger',
-    message: 'No existe ningún usuario registrado con el correo proporcionado',
+    type: "danger",
+    message: "No existe ningún usuario registrado con el correo proporcionado",
   };
 };
 
@@ -90,6 +90,14 @@ export const removeClient = async (id) => {
 export const getProducts = async () => {
   const products = await axios
     .get(`${ENDPOINT_URL}/api/products/`)
+    .then((res) => res.data);
+
+  return products.data;
+};
+
+export const getDetailedProducts = async () => {
+  const products = await axios
+    .get(`${ENDPOINT_URL}/api/products/join/`)
     .then((res) => res.data);
 
   return products.data;

@@ -64,16 +64,6 @@ export default function List({ id, data, structure }) {
                               (item[data[1]] === "danger" && "Solicitado")}
                           </Badge>
                         )) ||
-                        (data[1].includes("store") && (
-                          <p key={`${id}-text-${index}`} className={data[0]}>
-                            {(item[data[1]] === 1 && "delicias") ||
-                              (item[data[1]] === 2 && "jiménez") ||
-                              (item[data[1]] === 3 && "cuauhtémoc") ||
-                              (item[data[1]] === 4 && "casas grandes") ||
-                              (item[data[1]] === 5 && "torreón") ||
-                              (item[data[1]] === 6 && "durango")}
-                          </p>
-                        )) ||
                         (data[0] && (
                           <p key={`${id}-text-${index}`} className={data[0]}>
                             {item[data[1]]}
