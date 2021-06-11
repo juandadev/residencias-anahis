@@ -91,7 +91,11 @@ export default function Actions({ module, actions, id }) {
       );
     } else {
       editData = actions?.edit[1].reduce(
-        (acc, item) => ({ ...acc, [item[1]]: findRecord[`${item[1]}_${id}`] }),
+        (acc, item) => ({
+          ...acc,
+          [item[1]]:
+            item[1] === "password" ? "" : findRecord[`${item[1]}_${id}`],
+        }),
         {}
       );
     }
