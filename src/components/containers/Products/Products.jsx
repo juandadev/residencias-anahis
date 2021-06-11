@@ -8,12 +8,13 @@ import {
   removeProduct,
 } from "../../../utils/services/database";
 import { store } from "../../../context/store";
-import { Actions, List } from "../../elements/index";
+import { Actions, List, SearchInput } from "../../elements/index";
 
 export default function products() {
   const { dispatch } = useContext(store);
   const [products, setProducts] = useState([]);
   const [vendors, setVendors] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [response, setResponse] = useState(null);
 
   function handleVendors() {
@@ -36,14 +37,16 @@ export default function products() {
   }
 
   useEffect(() => {
-    getProducts().then((res) => setProducts(res));
+    getProducts().then((res) => {
+      setProducts(res);
+      setFilteredProducts(res);
+    });
     handleVendors();
   }, [response]);
 
   return (
     <>
       <h1>Productos</h1>
-
       <Jumbotron>
         <Row>
           <Col className="d-flex justify-content-end">
@@ -181,12 +184,16 @@ export default function products() {
             />
           </Col>
         </Row>
-
         <Row>
           <Col>
+            <SearchInput
+              data={products}
+              setData={setFilteredProducts}
+              module="product"
+            />
             <List
               id="product"
-              data={products}
+              data={filteredProducts}
               structure={{
                 Producto: [
                   ["font-weight-bold text-capitalize", "name_product"],

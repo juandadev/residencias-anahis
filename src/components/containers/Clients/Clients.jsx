@@ -40,7 +40,6 @@ export default function Clients() {
   return (
     <>
       <h1>Clientes</h1>
-
       <Jumbotron>
         <Row>
           <Col className="d-flex justify-content-end">
@@ -73,7 +72,6 @@ export default function Clients() {
             />
           </Col>
         </Row>
-
         <Row>
           <Col>
             <SearchInput
@@ -90,7 +88,7 @@ export default function Clients() {
                   ["text-black-50 text-capitalize", "address_client"],
                 ],
                 "Información de contacto": [
-                  ["", "email_client"],
+                  ["text-body", "email_client"],
                   ["text-black-50", "phone_client"],
                 ],
               }}

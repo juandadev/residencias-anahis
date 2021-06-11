@@ -7,11 +7,12 @@ import {
   modifyUser,
   removeUser,
 } from "../../../utils/services/database";
-import { Actions, List } from "../../elements/index";
+import { Actions, List, SearchInput } from "../../elements/index";
 
 export default function users() {
   const { dispatch } = useContext(store);
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [response, setResponse] = useState({});
 
   function handleInsert(data) {
@@ -30,13 +31,15 @@ export default function users() {
   }
 
   useEffect(() => {
-    getUsers().then((res) => setUsers(res));
+    getUsers().then((res) => {
+      setUsers(res);
+      setFilteredUsers(res);
+    });
   }, [response]);
 
   return (
     <>
       <h1>Administración de Usuarios</h1>
-
       <Jumbotron>
         <Row>
           <Col className="d-flex justify-content-end">
@@ -96,12 +99,16 @@ export default function users() {
             />
           </Col>
         </Row>
-
         <Row>
           <Col>
+            <SearchInput
+              data={users}
+              setData={setFilteredUsers}
+              module="user"
+            />
             <List
               id="user"
-              data={users}
+              data={filteredUsers}
               structure={{
                 "Información personal": [
                   ["font-weight-bold text-capitalize", "name_user"],

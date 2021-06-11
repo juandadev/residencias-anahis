@@ -7,11 +7,12 @@ import {
   modifyVendor,
   removeVendor,
 } from "../../../utils/services/database";
-import { Actions, List } from "../../elements/index";
+import { Actions, List, SearchInput } from "../../elements/index";
 
 export default function Vendors() {
   const { dispatch } = useContext(store);
   const [vendors, setVendors] = useState([]);
+  const [filteredVendors, setFilteredVendors] = useState([]);
   const [response, setResponse] = useState({});
 
   function handleInsert(data) {
@@ -31,13 +32,15 @@ export default function Vendors() {
   }
 
   useEffect(() => {
-    getVendors().then((res) => setVendors(res));
+    getVendors().then((res) => {
+      setVendors(res);
+      setFilteredVendors(res);
+    });
   }, [response]);
 
   return (
     <>
       <h1>Proveedores</h1>
-
       <Jumbotron>
         <Row>
           <Col className="d-flex justify-content-end">
@@ -79,12 +82,16 @@ export default function Vendors() {
             />
           </Col>
         </Row>
-
         <Row>
           <Col>
+            <SearchInput
+              data={vendors}
+              setData={setFilteredVendors}
+              module="vendor"
+            />
             <List
               id="vendor"
-              data={vendors}
+              data={filteredVendors}
               structure={{
                 Nombre: [
                   ["font-weight-bold text-capitalize", "name_vendor"],
